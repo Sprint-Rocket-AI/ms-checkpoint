@@ -16,4 +16,10 @@ public interface ActividadMongoRepository extends MongoRepository<Actividad, Str
     List<Actividad> findByEstadoAndFechaCreacionBetween(EstadoActividad estado, LocalDateTime desde, LocalDateTime hasta);
 
     List<Actividad> findByUserIdAndEstadoOrderByPrioridadAsc(String userId, EstadoActividad estado);
+
+    /** Todas las actividades de un usuario en un rango de fechas (cualquier estado). */
+    List<Actividad> findByUserIdAndFechaCreacionBetween(String userId, LocalDateTime desde, LocalDateTime hasta);
+
+    /** Actividades de todos los usuarios en un rango de fechas (para el scheduler). */
+    List<Actividad> findByFechaCreacionBetween(LocalDateTime desde, LocalDateTime hasta);
 }

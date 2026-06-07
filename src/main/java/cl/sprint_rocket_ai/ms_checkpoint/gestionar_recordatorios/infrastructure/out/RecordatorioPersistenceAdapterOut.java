@@ -50,4 +50,12 @@ public final class RecordatorioPersistenceAdapterOut implements RecordatorioPers
         log.info("Eliminando recordatorio con id: {}", id);
         recordatorioMongoRepository.deleteById(id);
     }
+
+    @Override
+    public List<Recordatorio> findVencidos() {
+        log.info("Buscando recordatorios vencidos (activos con proximoEnvio <= ahora)");
+        return recordatorioMongoRepository
+                .findByActivoTrueAndProximoEnvioLessThanEqual(java.time.LocalDateTime.now());
+    }
 }
+

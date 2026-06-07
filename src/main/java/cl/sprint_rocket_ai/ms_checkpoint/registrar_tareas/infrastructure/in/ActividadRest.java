@@ -73,4 +73,17 @@ public interface ActividadRest {
     })
     ResponseEntity<Void> delete(
             @Parameter(description = "ID de la actividad", required = true) @PathVariable String id);
+
+    @Operation(summary = "Listar actividades por fecha",
+            description = "Retorna todas las actividades (cualquier estado) de un desarrollador para un día específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de actividades del día",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ActividadResponse.class)))),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content)
+    })
+    ResponseEntity<List<ActividadResponse>> findByFecha(
+            @Parameter(description = "Fecha en formato yyyy-MM-dd", required = true, example = "2026-06-05")
+            @PathVariable java.time.LocalDate fecha,
+            @Parameter(description = "ID del desarrollador", required = true)
+            @RequestParam String userId);
 }

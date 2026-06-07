@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -70,4 +71,29 @@ public interface RecordatorioRest {
     })
     ResponseEntity<Void> delete(
             @Parameter(description = "ID del recordatorio", required = true) @PathVariable String id);
+
+    @Operation(summary = "Completar recordatorio",
+            description = "Marca el recordatorio como completado (activo=false). Invocado desde el popup WebSocket.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recordatorio completado",
+                    content = @Content(schema = @Schema(implementation = RecordatorioResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Recordatorio no encontrado",
+                    content = @Content)
+    })
+    ResponseEntity<RecordatorioResponse> completar(
+            @Parameter(description = "ID del recordatorio", required = true) @PathVariable String id);
+
+    @Operation(summary = "Posponer recordatorio",
+            description = "Pospone el recordatorio N minutos desde ahora. Invocado desde el popup WebSocket.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recordatorio pospuesto",
+                    content = @Content(schema = @Schema(implementation = RecordatorioResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Parámetro minutos inválido",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Recordatorio no encontrado",
+                    content = @Content)
+    })
+    ResponseEntity<RecordatorioResponse> posponer(
+            @Parameter(description = "ID del recordatorio", required = true) @PathVariable String id,
+            @Parameter(description = "Minutos a posponer", example = "10") @RequestParam(defaultValue = "10") int minutos);
 }

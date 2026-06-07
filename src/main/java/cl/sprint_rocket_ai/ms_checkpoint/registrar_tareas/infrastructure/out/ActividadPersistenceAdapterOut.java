@@ -69,4 +69,21 @@ public final class ActividadPersistenceAdapterOut implements ActividadPersistenc
         log.info("Eliminando actividad con id: {}", id);
         actividadMongoRepository.deleteById(id);
     }
+
+    @Override
+    public List<Actividad> findByUserIdAndFecha(String userId, LocalDate fecha) {
+        log.info("Buscando actividades del usuario: {} para la fecha: {}", userId, fecha);
+        LocalDateTime desde = fecha.atStartOfDay();
+        LocalDateTime hasta = fecha.atTime(LocalTime.MAX);
+        return actividadMongoRepository.findByUserIdAndFechaCreacionBetween(userId, desde, hasta);
+    }
+
+    @Override
+    public List<Actividad> findByFecha(LocalDate fecha) {
+        log.info("Buscando todas las actividades de la fecha: {}", fecha);
+        LocalDateTime desde = fecha.atStartOfDay();
+        LocalDateTime hasta = fecha.atTime(LocalTime.MAX);
+        return actividadMongoRepository.findByFechaCreacionBetween(desde, hasta);
+    }
 }
+

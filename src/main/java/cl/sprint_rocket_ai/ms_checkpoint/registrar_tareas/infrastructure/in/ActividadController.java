@@ -5,6 +5,7 @@ import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.Actualizar
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.CrearActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.EliminarActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.ListarActividadesByDesarrollador;
+import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.ListarActividadesByFecha;
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.ObtenerActividadById;
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.infrastructure.in.dtos.ActividadResponse;
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.infrastructure.in.dtos.ActualizarActividadRequest;
@@ -32,17 +33,20 @@ public final class ActividadController implements ActividadRest {
     private final ListarActividadesByDesarrollador listarActividadesByDesarrollador;
     private final ActualizarActividad actualizarActividad;
     private final EliminarActividad eliminarActividad;
+    private final ListarActividadesByFecha listarActividadesByFecha;
 
     public ActividadController(CrearActividad crearActividad,
                                ObtenerActividadById obtenerActividadById,
                                ListarActividadesByDesarrollador listarActividadesByDesarrollador,
                                ActualizarActividad actualizarActividad,
-                               EliminarActividad eliminarActividad) {
+                               EliminarActividad eliminarActividad,
+                               ListarActividadesByFecha listarActividadesByFecha) {
         this.crearActividad = crearActividad;
         this.obtenerActividadById = obtenerActividadById;
         this.listarActividadesByDesarrollador = listarActividadesByDesarrollador;
         this.actualizarActividad = actualizarActividad;
         this.eliminarActividad = eliminarActividad;
+        this.listarActividadesByFecha = listarActividadesByFecha;
     }
 
     @Override
@@ -77,5 +81,13 @@ public final class ActividadController implements ActividadRest {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         eliminarActividad.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/fecha/{fecha}")
+    public ResponseEntity<List<ActividadResponse>> findByFecha(
+            @PathVariable java.time.LocalDate fecha,
+            @RequestParam String userId) {
+        return ResponseEntity.ok(listarActividadesByFecha.execute(userId, fecha));
     }
 }

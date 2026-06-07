@@ -21,5 +21,12 @@ public interface ActividadPersistencePortOut {
 
     List<Actividad> findByUserIdOrderByPrioridadAsc(String userId, EstadoActividad estado, int limit);
 
+    /** Todas las actividades de un usuario en un día específico (cualquier estado). */
+    List<Actividad> findByUserIdAndFecha(String userId, LocalDate fecha);
+
+    /** Todas las actividades de todos los usuarios en un día específico (para el scheduler). */
+    List<Actividad> findByFecha(LocalDate fecha);
+
     void deleteById(String id);
 }
+

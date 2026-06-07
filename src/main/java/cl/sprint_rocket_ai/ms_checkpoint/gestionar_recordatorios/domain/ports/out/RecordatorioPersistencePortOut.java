@@ -15,5 +15,12 @@ public interface RecordatorioPersistencePortOut {
 
     List<Recordatorio> findByActivoTrue();
 
+    /**
+     * Retorna recordatorios activos cuyo {@code proximoEnvio} es igual o anterior al momento actual.
+     * Usados por el scheduler para detectar recordatorios vencidos y publicar el evento.
+     */
+    List<Recordatorio> findVencidos();
+
     void deleteById(String id);
 }
+
