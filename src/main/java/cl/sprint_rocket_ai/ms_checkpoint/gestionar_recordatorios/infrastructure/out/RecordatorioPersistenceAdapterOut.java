@@ -42,7 +42,9 @@ public final class RecordatorioPersistenceAdapterOut implements RecordatorioPers
     @Override
     public List<Recordatorio> findByActivoTrue() {
         log.info("Buscando recordatorios activos");
-        return recordatorioMongoRepository.findByActivoTrue();
+        List<Recordatorio> activos = recordatorioMongoRepository.findByActivoTrue();
+        log.info("Total de recordatorios activos detectados por el PersistenceAdapterOut: {}", activos.size());
+        return activos;
     }
 
     @Override

@@ -36,7 +36,10 @@ public record ActualizarRecordatorioRequest(
     public void applyTo(Recordatorio target) {
         if (this.titulo != null) target.setTitulo(this.titulo);
         if (this.tipoRecordatorio != null) target.setTipoRecordatorio(this.tipoRecordatorio);
-        if (this.horaActivacion != null) target.setHoraActivacion(this.horaActivacion);
+        if (this.horaActivacion != null) {
+            target.setHoraActivacion(this.horaActivacion);
+            target.setProximoEnvio(null); // Reset para que vuelva a evaluarse hoy si fue pospuesto
+        }
         if (this.diasSemana != null) target.setDiasSemana(this.diasSemana);
         if (this.activo != null) target.setActivo(this.activo);
         if (this.fechaExpiracion != null) target.setFechaExpiracion(this.fechaExpiracion);

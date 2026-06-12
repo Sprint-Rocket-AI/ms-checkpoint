@@ -26,7 +26,18 @@ public final class ActualizarActividad {
 
         return actividadPersistencePortOut.findById(id)
                 .map(existing -> {
+                    String estadoAnterior = existing.getEstado() != null ? existing.getEstado().name() : "N/A";
                     request.applyTo(existing);
+                    String estadoNuevo = existing.getEstado() != null ? existing.getEstado().name() : "N/A";
+                    
+                    if (!estadoAnterior.equals(estadoNuevo)) {
+                        log.info("✅ Actividad [{}] '{}' cambió su estado de [{}] a [{}]", 
+                            id, existing.getTitulo(), estadoAnterior, estadoNuevo);
+                    } else {
+                        log.info("📝 Actividad [{}] '{}' actualizada (sin cambio de estado)", 
+                            id, existing.getTitulo());
+                    }
+
                     existing.setFechaActualizacion(LocalDateTime.now());
                     return actividadPersistencePortOut.save(existing);
                 })

@@ -57,25 +57,47 @@ public class ReminderPollingScheduler {
 
     @Scheduled(fixedDelayString = "${schedulers.reminder-polling.fixed-delay:30000}")
     public void poll() {
-        log.debug("Polling de recordatorios vencidos iniciado");
+        log.debug("Polling de recordatorios iniciado");
 
-        List<Recordatorio> vencidos = recordatorioPersistencePortOut.findVencidos();
+        List<Recordatorio> activos = recordatorioPersistencePortOut.findByActivoTrue();
 
-        if (vencidos.isEmpty()) {
-            log.debug("Sin recordatorios vencidos en este ciclo");
+        if (activos.isEmpty()) {
+            log.debug("Sin recordatorios activos en este ciclo");
             return;
         }
 
-        log.info("Recordatorios vencidos encontrados: {}", vencidos.size());
+        LocalTime ahoraTime = LocalTime.now();
 
-        for (Recordatorio recordatorio : vencidos) {
+        for (Recordatorio recordatorio : activos) {
             try {
-                procesarVencido(recordatorio);
+                if (debeDispararse(recordatorio, ahoraTime)) {
+                    procesarVencido(recordatorio);
+                }
             } catch (Exception e) {
-                log.error("Error procesando recordatorio vencido | id='{}': {}",
+                log.error("Error procesando recordatorio | id='{}': {}",
                         recordatorio.getId(), e.getMessage(), e);
             }
         }
+    }
+
+    private boolean debeDispararse(Recordatorio recordatorio, LocalTime ahoraTime) {
+        if (!aplicaHoy(recordatorio)) return false;
+
+        if (recordatorio.getHoraActivacion() == null) return false;
+
+        int hora = parseHora(recordatorio.getHoraActivacion());
+        int minuto = parseMinuto(recordatorio.getHoraActivacion());
+        
+        boolean isMismoMinuto = ahoraTime.getHour() == hora && ahoraTime.getMinute() == minuto;
+        
+        if (!isMismoMinuto) return false;
+
+        // Evitar doble disparo usando proximoEnvio como control
+        if (recordatorio.getProximoEnvio() != null && recordatorio.getProximoEnvio().isAfter(LocalDateTime.now())) {
+            return false;
+        }
+
+        return true;
     }
 
     // ─── Lógica interna ──────────────────────────────────────────────────────────
@@ -83,17 +105,7 @@ public class ReminderPollingScheduler {
     private void procesarVencido(Recordatorio recordatorio) {
         String id = recordatorio.getId();
 
-        // 1. Verificar si aplica para el día actual (recordatorios semanales/custom)
-        if (!aplicaHoy(recordatorio)) {
-            log.debug("Recordatorio no aplica para hoy | id='{}' diasSemana='{}'",
-                    id, recordatorio.getDiasSemana());
-            // Actualizar proximoEnvio para no seguir apareciendo en el poll
-            actualizarProximoEnvio(recordatorio);
-            recordatorioPersistencePortOut.save(recordatorio);
-            return;
-        }
-
-        // 2. Incrementar contador de disparos
+        // 1. Incrementar contador de disparos
         int count = reminderCountMap.merge(id, 1, Integer::sum);
 
         log.info("Disparando recordatorio | id='{}' userId='{}' titulo='{}' count={}",
