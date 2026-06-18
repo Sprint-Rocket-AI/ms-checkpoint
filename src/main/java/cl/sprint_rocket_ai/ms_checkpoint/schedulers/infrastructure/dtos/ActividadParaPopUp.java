@@ -10,20 +10,12 @@ public record ActividadParaPopUp(
         String titulo,
 
         @Schema(description = "Prioridad de la actividad", example = "ALTA")
-        String prioridad,
-
-        @Schema(description = "Ticket Jira asociado", example = "SPRINT-1234")
-        String ticketJira,
-
-        @Schema(description = "Notas de la actividad", example = "Revisar documentación")
-        String notas
+        String prioridad
 ) {
     public static ActividadParaPopUp from(Actividad actividad) {
         return new ActividadParaPopUp(
                 actividad.getTitulo(),
-                actividad.getPrioridad() != null ? actividad.getPrioridad().name() : null,
-                actividad.getTicketJira(),
-                actividad.getNotas()
+                actividad.getPrioridad() != null ? actividad.getPrioridad().name() : null
         );
     }
 }

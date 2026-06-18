@@ -9,20 +9,14 @@ public record ActividadResumenDto(
         String titulo,
         String descripcion,
         String estado,
-        String prioridad,
-        String ticketJira,
-        String notas,
-        Double horasReales
+        String prioridad
 ) {
     public static ActividadResumenDto from(Actividad actividad) {
         return new ActividadResumenDto(
                 actividad.getTitulo(),
                 actividad.getDescripcion(),
                 actividad.getEstado() != null ? actividad.getEstado().name() : null,
-                actividad.getPrioridad() != null ? actividad.getPrioridad().name() : null,
-                actividad.getTicketJira(),
-                actividad.getNotas(),
-                actividad.getHorasReales()
+                actividad.getPrioridad() != null ? actividad.getPrioridad().name() : null
         );
     }
 }

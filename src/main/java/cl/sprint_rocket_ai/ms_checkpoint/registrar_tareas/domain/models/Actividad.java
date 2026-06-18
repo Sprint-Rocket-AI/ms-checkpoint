@@ -35,21 +35,6 @@ public class Actividad {
     @Field("estado")
     private EstadoActividad estado;
 
-    @Field("ticket_jira")
-    private String ticketJira;
-
-    @Field("fecha_vencimiento")
-    private LocalDate fechaVencimiento;
-
-    @Field("etiquetas")
-    private List<String> etiquetas;
-
-    @Field("notas")
-    private String notas;
-
-    @Field("horas_reales")
-    private Double horasReales;
-
     @Field("fecha_creacion")
     private LocalDateTime fechaCreacion;
 
@@ -115,45 +100,6 @@ public class Actividad {
         this.estado = estado;
     }
 
-    public String getTicketJira() {
-        return ticketJira;
-    }
-
-    public void setTicketJira(String ticketJira) {
-        this.ticketJira = ticketJira;
-    }
-
-    public LocalDate getFechaVencimiento() {
-        return fechaVencimiento;
-    }
-
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
-    }
-
-    public List<String> getEtiquetas() {
-        return etiquetas;
-    }
-
-    public void setEtiquetas(List<String> etiquetas) {
-        this.etiquetas = etiquetas;
-    }
-
-    public String getNotas() {
-        return notas;
-    }
-
-    public void setNotas(String notas) {
-        this.notas = notas;
-    }
-
-    public Double getHorasReales() {
-        return horasReales;
-    }
-
-    public void setHorasReales(Double horasReales) {
-        this.horasReales = horasReales;
-    }
 
     public LocalDateTime getFechaCreacion() {
         return fechaCreacion;

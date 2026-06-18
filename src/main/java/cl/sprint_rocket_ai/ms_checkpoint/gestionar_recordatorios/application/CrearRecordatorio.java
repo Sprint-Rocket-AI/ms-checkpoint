@@ -27,7 +27,6 @@ public final class CrearRecordatorio {
         Recordatorio recordatorio = new Recordatorio();
         request.applyTo(recordatorio);
         recordatorio.setActivo(true);
-        recordatorio.setFechaCreacion(LocalDateTime.now());
 
         Recordatorio saved = recordatorioPersistencePortOut.save(recordatorio);
 

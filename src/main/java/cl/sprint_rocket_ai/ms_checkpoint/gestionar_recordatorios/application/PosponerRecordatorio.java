@@ -41,7 +41,7 @@ public final class PosponerRecordatorio {
                 .orElseThrow(() -> new RecordatorioNotFoundException(id));
 
         LocalDateTime nuevoProximoEnvio = LocalDateTime.now().plusMinutes(minutos);
-        recordatorio.setProximoEnvio(nuevoProximoEnvio);
+        // recordatorio.setProximoEnvio(nuevoProximoEnvio); // Removed since proximoEnvio no longer exists
         recordatorio.setFechaActualizacion(LocalDateTime.now());
 
         Recordatorio saved = recordatorioPersistencePortOut.save(recordatorio);

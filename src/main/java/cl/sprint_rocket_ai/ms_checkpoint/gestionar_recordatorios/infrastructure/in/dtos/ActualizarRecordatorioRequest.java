@@ -18,31 +18,16 @@ public record ActualizarRecordatorioRequest(
         @Schema(description = "Tipo de recordatorio", example = "SEMANAL")
         TipoRecordatorio tipoRecordatorio,
 
-        @Schema(description = "Hora de activación en formato HH:mm", example = "14:00")
-        String horaActivacion,
-
-        @Schema(description = "Días de la semana en que se activa")
-        List<DiaSemana> diasSemana,
-
         @Schema(description = "Indica si el recordatorio está activo", example = "false")
         Boolean activo,
 
         @Schema(description = "Fecha de expiración del recordatorio", example = "2025-06-30")
-        LocalDate fechaExpiracion,
-
-        @Schema(description = "Próximo envío programado", example = "2024-05-30T14:30:00")
-        LocalDateTime proximoEnvio
+        LocalDateTime fechaExpiracion
 ) {
     public void applyTo(Recordatorio target) {
         if (this.titulo != null) target.setTitulo(this.titulo);
         if (this.tipoRecordatorio != null) target.setTipoRecordatorio(this.tipoRecordatorio);
-        if (this.horaActivacion != null) {
-            target.setHoraActivacion(this.horaActivacion);
-            target.setProximoEnvio(null); // Reset para que vuelva a evaluarse hoy si fue pospuesto
-        }
-        if (this.diasSemana != null) target.setDiasSemana(this.diasSemana);
         if (this.activo != null) target.setActivo(this.activo);
         if (this.fechaExpiracion != null) target.setFechaExpiracion(this.fechaExpiracion);
-        if (this.proximoEnvio != null) target.setProximoEnvio(this.proximoEnvio);
     }
 }

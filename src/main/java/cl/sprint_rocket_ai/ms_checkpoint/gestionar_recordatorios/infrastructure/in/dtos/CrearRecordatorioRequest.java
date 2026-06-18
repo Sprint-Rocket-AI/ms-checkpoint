@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Schema(description = "Solicitud para crear un nuevo recordatorio")
@@ -21,17 +22,11 @@ public record CrearRecordatorioRequest(
 
                 @Schema(description = "Tipo de recordatorio", example = "DIARIO") @NotNull(message = "El tipo de recordatorio es obligatorio") TipoRecordatorio tipoRecordatorio,
 
-                @Schema(description = "Hora de activación en formato HH:mm", example = "08:30") @NotBlank(message = "La hora de activación es obligatoria") @Pattern(regexp = "^([01]\\d|2[0-3]):([0-5]\\d)$", message = "La hora debe tener formato HH:mm") String horaActivacion,
-
-                @Schema(description = "Días de la semana en que se activa", example = "[\"LUNES\", \"MARTES\", \"MIERCOLES\", \"JUEVES\", \"VIERNES\"]") List<DiaSemana> diasSemana,
-
-                @Schema(description = "Fecha de expiración del recordatorio", example = "2024-12-31") LocalDate fechaExpiracion) {
+                @Schema(description = "Fecha de expiración del recordatorio", example = "2024-12-31") LocalDateTime fechaExpiracion) {
         public void applyTo(Recordatorio target) {
                 target.setUserId(this.userId);
                 target.setTitulo(this.titulo);
                 target.setTipoRecordatorio(this.tipoRecordatorio);
-                target.setHoraActivacion(this.horaActivacion);
-                target.setDiasSemana(this.diasSemana);
                 target.setFechaExpiracion(this.fechaExpiracion);
         }
 }

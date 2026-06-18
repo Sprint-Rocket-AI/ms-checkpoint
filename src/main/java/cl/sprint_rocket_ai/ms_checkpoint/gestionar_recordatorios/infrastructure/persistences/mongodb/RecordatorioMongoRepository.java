@@ -12,7 +12,5 @@ public interface RecordatorioMongoRepository extends MongoRepository<Recordatori
 
     List<Recordatorio> findByActivoTrue();
 
-    /** Recordatorios activos cuyo proximoEnvio ya ocurrió (vencidos). */
-    List<Recordatorio> findByActivoTrueAndProximoEnvioLessThanEqual(LocalDateTime ahora);
 }
 

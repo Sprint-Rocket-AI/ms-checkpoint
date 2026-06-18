@@ -25,23 +25,12 @@ public class Recordatorio {
     @Field("tipo_recordatorio")
     private TipoRecordatorio tipoRecordatorio;
 
-    @Field("hora_activacion")
-    private String horaActivacion;
-
-    @Field("dias_semana")
-    private List<DiaSemana> diasSemana;
 
     @Field("activo")
     private boolean activo;
 
     @Field("fecha_expiracion")
-    private LocalDate fechaExpiracion;
-
-    @Field("proximo_envio")
-    private LocalDateTime proximoEnvio;
-
-    @Field("fecha_creacion")
-    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaExpiracion;
 
     @Field("fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
@@ -81,21 +70,6 @@ public class Recordatorio {
         this.tipoRecordatorio = tipoRecordatorio;
     }
 
-    public String getHoraActivacion() {
-        return horaActivacion;
-    }
-
-    public void setHoraActivacion(String horaActivacion) {
-        this.horaActivacion = horaActivacion;
-    }
-
-    public List<DiaSemana> getDiasSemana() {
-        return diasSemana;
-    }
-
-    public void setDiasSemana(List<DiaSemana> diasSemana) {
-        this.diasSemana = diasSemana;
-    }
 
     public boolean isActivo() {
         return activo;
@@ -105,29 +79,14 @@ public class Recordatorio {
         this.activo = activo;
     }
 
-    public LocalDate getFechaExpiracion() {
+    public LocalDateTime getFechaExpiracion() {
         return fechaExpiracion;
     }
 
-    public void setFechaExpiracion(LocalDate fechaExpiracion) {
+    public void setFechaExpiracion(LocalDateTime fechaExpiracion) {
         this.fechaExpiracion = fechaExpiracion;
     }
 
-    public LocalDateTime getProximoEnvio() {
-        return proximoEnvio;
-    }
-
-    public void setProximoEnvio(LocalDateTime proximoEnvio) {
-        this.proximoEnvio = proximoEnvio;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
 
     public LocalDateTime getFechaActualizacion() {
         return fechaActualizacion;

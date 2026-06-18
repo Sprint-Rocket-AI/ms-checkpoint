@@ -34,17 +34,9 @@ public record CrearActividadRequest(
         @NotNull(message = "La prioridad es obligatoria")
         Prioridad prioridad,
 
-        @Schema(description = "Identificador del ticket en Jira", example = "SPRINT-1234")
-        String ticketJira,
+        @Schema(description = "Fecha de creacion de la actividad", example = "2024-06-15")
+        LocalDate fechaCreacion
 
-        @Schema(description = "Fecha de vencimiento de la actividad", example = "2024-06-15")
-        LocalDate fechaVencimiento,
-
-        @Schema(description = "Etiquetas asociadas a la actividad", example = "[\"backend\", \"autenticacion\"]")
-        List<String> etiquetas,
-
-        @Schema(description = "Notas adicionales sobre la actividad", example = "Revisar documentación del provider")
-        String notas
 ) {
     public void applyTo(Actividad target) {
         target.setUserId(this.userId);
@@ -52,9 +44,5 @@ public record CrearActividadRequest(
         target.setDescripcion(this.descripcion);
         target.setTipo(this.tipo);
         target.setPrioridad(this.prioridad);
-        target.setTicketJira(this.ticketJira);
-        target.setFechaVencimiento(this.fechaVencimiento);
-        target.setEtiquetas(this.etiquetas);
-        target.setNotas(this.notas);
     }
 }

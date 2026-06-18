@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,13 +52,6 @@ public final class RecordatorioPersistenceAdapterOut implements RecordatorioPers
     public void deleteById(String id) {
         log.info("Eliminando recordatorio con id: {}", id);
         recordatorioMongoRepository.deleteById(id);
-    }
-
-    @Override
-    public List<Recordatorio> findVencidos() {
-        log.info("Buscando recordatorios vencidos (activos con proximoEnvio <= ahora)");
-        return recordatorioMongoRepository
-                .findByActivoTrueAndProximoEnvioLessThanEqual(java.time.LocalDateTime.now());
     }
 }
 

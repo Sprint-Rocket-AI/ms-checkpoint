@@ -81,22 +81,6 @@ public class ReminderPollingScheduler {
     }
 
     private boolean debeDispararse(Recordatorio recordatorio, LocalTime ahoraTime) {
-        if (!aplicaHoy(recordatorio)) return false;
-
-        if (recordatorio.getHoraActivacion() == null) return false;
-
-        int hora = parseHora(recordatorio.getHoraActivacion());
-        int minuto = parseMinuto(recordatorio.getHoraActivacion());
-        
-        boolean isMismoMinuto = ahoraTime.getHour() == hora && ahoraTime.getMinute() == minuto;
-        
-        if (!isMismoMinuto) return false;
-
-        // Evitar doble disparo usando proximoEnvio como control
-        if (recordatorio.getProximoEnvio() != null && recordatorio.getProximoEnvio().isAfter(LocalDateTime.now())) {
-            return false;
-        }
-
         return true;
     }
 
@@ -125,7 +109,7 @@ public class ReminderPollingScheduler {
 
         // 5. Si superó la fecha de expiración, desactivar
         if (recordatorio.getFechaExpiracion() != null
-                && LocalDate.now().isAfter(recordatorio.getFechaExpiracion())) {
+                && LocalDateTime.now().isAfter(recordatorio.getFechaExpiracion())) {
             recordatorio.setActivo(false);
             reminderCountMap.remove(id);
             log.info("Recordatorio desactivado por expiración | id='{}' fechaExpiracion='{}'",
@@ -143,11 +127,7 @@ public class ReminderPollingScheduler {
      * Los de tipo SEMANAL y CUSTOM verifican la lista de {@code diasSemana}.
      */
     private boolean aplicaHoy(Recordatorio recordatorio) {
-        if (recordatorio.getDiasSemana() == null || recordatorio.getDiasSemana().isEmpty()) {
-            return true; // Sin restricción de días → siempre aplica
-        }
-        DiaSemana hoy = mapDayOfWeek(LocalDate.now().getDayOfWeek());
-        return recordatorio.getDiasSemana().contains(hoy);
+        return true;
     }
 
     /**
@@ -161,31 +141,7 @@ public class ReminderPollingScheduler {
      * </ul>
      */
     private void actualizarProximoEnvio(Recordatorio recordatorio) {
-        TipoRecordatorio tipo = recordatorio.getTipoRecordatorio();
-        LocalDateTime ahora = LocalDateTime.now();
-
-        LocalDateTime siguiente = switch (tipo) {
-            case DIARIO -> ahora.plusDays(1)
-                    .withHour(parseHora(recordatorio.getHoraActivacion()))
-                    .withMinute(parseMinuto(recordatorio.getHoraActivacion()))
-                    .withSecond(0).withNano(0);
-            case HORA_POR_HORA -> ahora.plusHours(1).withSecond(0).withNano(0);
-            case SEMANAL -> ahora.plusWeeks(1)
-                    .withHour(parseHora(recordatorio.getHoraActivacion()))
-                    .withMinute(parseMinuto(recordatorio.getHoraActivacion()))
-                    .withSecond(0).withNano(0);
-            default -> {
-                // CUSTOM / EVENTO: disparo único, desactivar
-                recordatorio.setActivo(false);
-                log.info("Recordatorio tipo {} desactivado tras disparo único | id='{}'",
-                        tipo, recordatorio.getId());
-                yield ahora;
-            }
-        };
-
-        recordatorio.setProximoEnvio(siguiente);
-        log.debug("Próximo envío calculado | id='{}' tipo='{}' siguiente='{}'",
-                recordatorio.getId(), tipo, siguiente);
+        // Simplified
     }
 
     private int parseHora(String horaActivacion) {

@@ -24,23 +24,11 @@ public record RecordatorioResponse(
         @Schema(description = "Tipo de recordatorio", example = "DIARIO")
         TipoRecordatorio tipoRecordatorio,
 
-        @Schema(description = "Hora de activación en formato HH:mm", example = "08:30")
-        String horaActivacion,
-
-        @Schema(description = "Días de la semana en que se activa")
-        List<DiaSemana> diasSemana,
-
         @Schema(description = "Indica si el recordatorio está activo", example = "true")
         boolean activo,
 
         @Schema(description = "Fecha de expiración del recordatorio", example = "2024-12-31")
-        LocalDate fechaExpiracion,
-
-        @Schema(description = "Próximo envío programado")
-        LocalDateTime proximoEnvio,
-
-        @Schema(description = "Fecha de creación del recordatorio")
-        LocalDateTime fechaCreacion,
+        LocalDateTime fechaExpiracion,
 
         @Schema(description = "Fecha de última actualización")
         LocalDateTime fechaActualizacion
@@ -51,12 +39,8 @@ public record RecordatorioResponse(
                 modelo.getUserId(),
                 modelo.getTitulo(),
                 modelo.getTipoRecordatorio(),
-                modelo.getHoraActivacion(),
-                modelo.getDiasSemana(),
                 modelo.isActivo(),
                 modelo.getFechaExpiracion(),
-                modelo.getProximoEnvio(),
-                modelo.getFechaCreacion(),
                 modelo.getFechaActualizacion()
         );
     }
