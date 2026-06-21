@@ -14,21 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Caso de uso: generación del resumen diario ejecutivo para todos los desarrolladores
- * que tengan actividades registradas el día anterior.
- *
- * <p>Invocado por el scheduler {@code GenerarResumenDiarioScheduler} a las 8:30 a.m.
- *
- * <p>Flujo:
- * <ol>
- *   <li>Busca todas las actividades del día anterior (cualquier estado).</li>
- *   <li>Si no hay actividades, termina sin hacer nada.</li>
- *   <li>Agrupa las actividades por {@code userId}.</li>
- *   <li>Para cada usuario con actividades: llama a IA-ENGINE para obtener resumen + sugerencias.</li>
- *   <li>Notifica al desarrollador con el correo estructurado (resumen + sugerencias).</li>
- * </ol>
- */
 @Service
 public final class GenerarResumenDiario {
 

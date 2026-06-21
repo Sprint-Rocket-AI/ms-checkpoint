@@ -1,6 +1,5 @@
 package cl.sprint_rocket_ai.ms_checkpoint.mcp.infrastructure.in;
 
-import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.EstadoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.Prioridad;
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.TipoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.CrearActividad;
