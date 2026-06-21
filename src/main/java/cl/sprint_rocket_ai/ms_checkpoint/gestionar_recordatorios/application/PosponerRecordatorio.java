@@ -42,7 +42,7 @@ public final class PosponerRecordatorio {
 
         LocalDateTime nuevoProximoEnvio = LocalDateTime.now().plusMinutes(minutos);
         // recordatorio.setProximoEnvio(nuevoProximoEnvio); // Removed since proximoEnvio no longer exists
-        recordatorio.setFechaActualizacion(LocalDateTime.now());
+        recordatorio.setFechaCreacion(LocalDateTime.now());
 
         Recordatorio saved = recordatorioPersistencePortOut.save(recordatorio);
         log.info("Recordatorio pospuesto exitosamente | id='{}' nuevoProximoEnvio='{}'",

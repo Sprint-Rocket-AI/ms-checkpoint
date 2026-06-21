@@ -1,14 +1,9 @@
 package cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.infrastructure.in.dtos;
 
-import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.DiaSemana;
-import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.TipoRecordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.domain.models.Recordatorio;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-
 @Schema(description = "Respuesta con los datos de un recordatorio")
 public record RecordatorioResponse(
 
@@ -21,9 +16,6 @@ public record RecordatorioResponse(
         @Schema(description = "Título del recordatorio", example = "Sincronización matutina")
         String titulo,
 
-        @Schema(description = "Tipo de recordatorio", example = "DIARIO")
-        TipoRecordatorio tipoRecordatorio,
-
         @Schema(description = "Indica si el recordatorio está activo", example = "true")
         boolean activo,
 
@@ -31,17 +23,16 @@ public record RecordatorioResponse(
         LocalDateTime fechaExpiracion,
 
         @Schema(description = "Fecha de última actualización")
-        LocalDateTime fechaActualizacion
+        LocalDateTime fechaCreacion
 ) {
     public static RecordatorioResponse from(Recordatorio modelo) {
         return new RecordatorioResponse(
                 modelo.getId(),
                 modelo.getUserId(),
                 modelo.getTitulo(),
-                modelo.getTipoRecordatorio(),
                 modelo.isActivo(),
                 modelo.getFechaExpiracion(),
-                modelo.getFechaActualizacion()
+                modelo.getFechaCreacion()
         );
     }
 }

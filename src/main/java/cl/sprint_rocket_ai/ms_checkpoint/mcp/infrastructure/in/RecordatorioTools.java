@@ -5,8 +5,10 @@ import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.application.Lis
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.infrastructure.in.dtos.CrearRecordatorioRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.infrastructure.in.dtos.RecordatorioResponse;
 import org.springframework.ai.mcp.annotation.McpTool;
+import org.springframework.ai.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -23,24 +25,37 @@ public class RecordatorioTools {
 
     @McpTool(
             name = "crearRecordatorio",
-            description = "Crear un nuevo recordatorio para un desarrollador"
+            description = "Agenda un nuevo recordatorio o alerta programada para un desarrollador específico"
     )
     public RecordatorioResponse crearRecordatorio(
-            CrearRecordatorioRequest request) {
+            @McpToolParam(description = "ID único del desarrollador o usuario dueño del recordatorio", required = true) String userId,
+            @McpToolParam(description = "Título descriptivo del recordatorio (ej. Sincronización matutina)", required = true) String titulo,
+            @McpToolParam(description = "Fecha y hora opcional de expiración en formato ISO (YYYY-MM-DDTHH:mm:ss). Si no se define, no expira.", required = false) String fechaExpiracion
+    ) {
+        LocalDateTime expiracion = null;
+        if (fechaExpiracion != null && !fechaExpiracion.isBlank()) {
+            try {
+                expiracion = LocalDateTime.parse(fechaExpiracion);
+            } catch (Exception e) {
+                expiracion = LocalDateTime.now().plusDays(1);
+            }
+        }
+        CrearRecordatorioRequest request = new CrearRecordatorioRequest(
+                userId,
+                titulo,
+                expiracion
+        );
 
         return crearRecordatorio.execute(request);
     }
 
     @McpTool(
             name = "listarRecordatoriosByDesarrollador",
-            description = "Crear un nuevo recordatorio para un desarrollador"
+            description = "Recupera todos los recordatorios activos y programados asociados al userId de un desarrollador"
     )
     public List<RecordatorioResponse> listarRecordatoriosByDesarrollador(
-            String userId) {
-
+            @McpToolParam(description = "ID único del desarrollador para filtrar los recordatorios", required = true) String userId
+    ) {
         return listarRecordatoriosByDesarrollador.execute(userId);
     }
-
-
-
 }

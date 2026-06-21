@@ -1,6 +1,5 @@
 package cl.sprint_rocket_ai.ms_checkpoint.mcp.infrastructure.in;
 
-
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.EstadoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.Prioridad;
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.TipoActividad;
@@ -10,7 +9,7 @@ import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.ListarActi
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.infrastructure.in.dtos.ActividadResponse;
 import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.infrastructure.in.dtos.CrearActividadRequest;
 import org.springframework.ai.mcp.annotation.McpTool;
-import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.mcp.annotation.McpToolParam; // CAMBIO: Importación mandatoria en M7
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -25,8 +24,7 @@ public class ActividadTools {
 
     public ActividadTools(CrearActividad crearActividad,
                           ListarActividadesByDesarrollador listarActividadesByDesarrollador,
-                          ListarActividadesByFecha listarActividadesByFecha
-                          ) {
+                          ListarActividadesByFecha listarActividadesByFecha) {
         this.crearActividad = crearActividad;
         this.listarActividadesByDesarrollador = listarActividadesByDesarrollador;
         this.listarActividadesByFecha = listarActividadesByFecha;
@@ -44,16 +42,13 @@ public class ActividadTools {
             Prioridad prioridad,
             String fechaCreacion // <-- Cambiado de LocalDate a String
     ) {
-        // Convertir el String a LocalDate manualmente controlando errores
         LocalDate fecha;
         try {
-            fecha = LocalDate.parse(fechaCreacion);
+            fecha = (fechaCreacion != null && !fechaCreacion.isBlank()) ? LocalDate.parse(fechaCreacion) : LocalDate.now();
         } catch (Exception e) {
-            // En caso de que el modelo mande un formato extraño o vacío, usamos la fecha de hoy
             fecha = LocalDate.now();
         }
 
-        // Ahora puedes pasárselo a tu lógica o DTO original
         CrearActividadRequest request = new CrearActividadRequest(
                 userId, titulo, descripcion, tipo, prioridad, fecha
         );
@@ -66,24 +61,19 @@ public class ActividadTools {
             description = "Lista todas las actividades de un desarrollador usando su userId"
     )
     public List<ActividadResponse> listarActividadesByDesarrollador(
-            String userId) {
-
+            @McpToolParam(description = "ID del desarrollador para filtrar los checkpoints", required = true) String userId
+    ) {
         return listarActividadesByDesarrollador.execute(userId, null);
     }
 
     @McpTool(
             name = "listarActividadByFecha",
-            description = "Obtiene las actividades de una fecha"
+            description = "Obtiene las actividades asignadas a un desarrollador en una fecha específica"
     )
     public List<ActividadResponse> listarActividadesByFecha(
-            String userId,
-            LocalDate fecha) {
-
+            @McpToolParam(description = "ID del desarrollador", required = true) String userId,
+            @McpToolParam(description = "Fecha de consulta en formato ISO YYYY-MM-DD", required = true) LocalDate fecha
+    ) {
         return listarActividadesByFecha.execute(userId, fecha);
     }
-
-
-
 }
-
-

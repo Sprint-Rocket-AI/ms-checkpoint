@@ -1,14 +1,10 @@
 package cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.domain.models;
 
-import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.DiaSemana;
-import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.TipoRecordatorio;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Document(collection = "recordatorios")
 public class Recordatorio {
@@ -22,18 +18,14 @@ public class Recordatorio {
     @Field("titulo")
     private String titulo;
 
-    @Field("tipo_recordatorio")
-    private TipoRecordatorio tipoRecordatorio;
-
-
     @Field("activo")
     private boolean activo;
 
     @Field("fecha_expiracion")
     private LocalDateTime fechaExpiracion;
 
-    @Field("fecha_actualizacion")
-    private LocalDateTime fechaActualizacion;
+    @Field("fecha_creacion")
+    private LocalDateTime fechaCreacion;
 
     public Recordatorio() {
     }
@@ -62,15 +54,6 @@ public class Recordatorio {
         this.titulo = titulo;
     }
 
-    public TipoRecordatorio getTipoRecordatorio() {
-        return tipoRecordatorio;
-    }
-
-    public void setTipoRecordatorio(TipoRecordatorio tipoRecordatorio) {
-        this.tipoRecordatorio = tipoRecordatorio;
-    }
-
-
     public boolean isActivo() {
         return activo;
     }
@@ -87,12 +70,11 @@ public class Recordatorio {
         this.fechaExpiracion = fechaExpiracion;
     }
 
-
-    public LocalDateTime getFechaActualizacion() {
-        return fechaActualizacion;
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 }

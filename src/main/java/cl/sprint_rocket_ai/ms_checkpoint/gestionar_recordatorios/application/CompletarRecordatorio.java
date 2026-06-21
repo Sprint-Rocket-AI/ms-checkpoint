@@ -34,7 +34,7 @@ public final class CompletarRecordatorio {
                 .orElseThrow(() -> new RecordatorioNotFoundException(id));
 
         recordatorio.setActivo(false);
-        recordatorio.setFechaActualizacion(LocalDateTime.now());
+        recordatorio.setFechaCreacion(LocalDateTime.now());
 
         Recordatorio saved = recordatorioPersistencePortOut.save(recordatorio);
         log.info("Recordatorio completado exitosamente | id='{}'", id);

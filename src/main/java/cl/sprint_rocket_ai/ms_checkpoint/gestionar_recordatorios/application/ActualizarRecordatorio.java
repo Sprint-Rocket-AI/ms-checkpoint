@@ -27,7 +27,7 @@ public final class ActualizarRecordatorio {
         return recordatorioPersistencePortOut.findById(id)
                 .map(existing -> {
                     request.applyTo(existing);
-                    existing.setFechaActualizacion(LocalDateTime.now());
+                    existing.setFechaCreacion(LocalDateTime.now());
                     return recordatorioPersistencePortOut.save(existing);
                 })
                 .map(RecordatorioResponse::from)

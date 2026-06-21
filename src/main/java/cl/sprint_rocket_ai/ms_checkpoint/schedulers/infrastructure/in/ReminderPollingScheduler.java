@@ -1,7 +1,6 @@
 package cl.sprint_rocket_ai.ms_checkpoint.schedulers.infrastructure.in;
 
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.DiaSemana;
-import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.TipoRecordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.domain.events.ReminderTriggeredEvent;
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.domain.models.Recordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.domain.ports.out.RecordatorioPersistencePortOut;
@@ -12,11 +11,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -117,7 +114,7 @@ public class ReminderPollingScheduler {
         }
 
         // 6. Persistir cambios
-        recordatorio.setFechaActualizacion(LocalDateTime.now());
+        recordatorio.setFechaCreacion(LocalDateTime.now());
         recordatorioPersistencePortOut.save(recordatorio);
     }
 
