@@ -1,4 +1,4 @@
-package cl.sprint_rocket_ai.ms_checkpoint.mcp.infrastructure.in;
+package cl.sprint_rocket_ai.ms_checkpoint.mcp_tools;
 
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.application.CrearRecordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.gestionar_recordatorios.application.ListarRecordatoriosByDesarrollador;
