@@ -15,8 +15,9 @@ public interface NotificationPortOut {
      * El adaptador es responsable de formatear el contenido como correo electrónico.
      *
      * @param userId      identificador del desarrollador
+     * @param correo      correo del desarrollador
      * @param resumen     texto del resumen ejecutivo generado por la IA
      * @param sugerencias lista de actividades sugeridas para el día siguiente
      */
-    void notifyDeveloperWithSummary(String userId, String resumen, List<SugerenciaActividad> sugerencias);
+    void notifyDeveloperWithSummary(String userId, String correo, String resumen, List<SugerenciaActividad> sugerencias);
 }

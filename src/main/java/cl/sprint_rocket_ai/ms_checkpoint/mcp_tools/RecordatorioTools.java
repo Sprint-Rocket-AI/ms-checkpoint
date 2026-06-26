@@ -30,7 +30,7 @@ public class RecordatorioTools {
     public RecordatorioResponse crearRecordatorio(
             @McpToolParam(description = "ID único del desarrollador o usuario dueño del recordatorio", required = true) String userId,
             @McpToolParam(description = "Título descriptivo del recordatorio (ej. Sincronización matutina)", required = true) String titulo,
-            @McpToolParam(description = "Fecha y hora opcional de expiración en formato ISO (YYYY-MM-DDTHH:mm:ss). Si no se define, no expira.", required = false) String fechaExpiracion
+            @McpToolParam(description = "Fecha y hora de expiración en formato ISO (YYYY-MM-DDTHH:mm:ss)", required = false) String fechaExpiracion
     ) {
         LocalDateTime expiracion = null;
         if (fechaExpiracion != null && !fechaExpiracion.isBlank()) {
