@@ -13,7 +13,7 @@ import java.util.Base64;
 @Configuration
 public class JiraRestClientConfig {
 
-    @Bean
+    @Bean("jiraRestClient")
     public RestClient jiraRestClient(
             @Value("${jira.url}") String jiraUrl,
             @Value("${jira.email}") String email,

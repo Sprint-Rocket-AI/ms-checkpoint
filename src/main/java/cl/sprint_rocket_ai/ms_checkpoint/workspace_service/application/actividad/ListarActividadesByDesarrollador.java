@@ -1,0 +1,38 @@
+package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.actividad;
+
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.EstadoActividad;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActividadResponse;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.persistences.mongodb.ActividadMongoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public final class ListarActividadesByDesarrollador {
+
+    private static final Logger log = LoggerFactory.getLogger(ListarActividadesByDesarrollador.class);
+
+    private final ActividadMongoRepository actividadRepository;
+
+    public ListarActividadesByDesarrollador(ActividadMongoRepository actividadRepository) {
+        this.actividadRepository = actividadRepository;
+    }
+
+    public List<ActividadResponse> execute(String userId, EstadoActividad estado) {
+        log.info("Listando actividades del desarrollador: {} con filtro estado: {}", userId, estado);
+
+        if (estado != null) {
+            return actividadRepository.findByUserIdAndEstado(userId, estado)
+                    .stream()
+                    .map(ActividadResponse::from)
+                    .toList();
+        }
+
+        return actividadRepository.findByUserId(userId)
+                .stream()
+                .map(ActividadResponse::from)
+                .toList();
+    }
+}
