@@ -1,6 +1,6 @@
 package cl.sprint_rocket_ai.ms_checkpoint.schedulers.infrastructure.dtos;
 
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.domain.models.Actividad;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.domain.models.Actividad;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Actividad simplificada para solicitudes de pop-up a IA-ENGINE")

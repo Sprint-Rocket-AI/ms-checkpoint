@@ -1,8 +1,8 @@
 package cl.sprint_rocket_ai.ms_checkpoint.schedulers.application;
 
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.EstadoActividad;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.domain.models.Actividad;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.domain.ports.out.ActividadPersistencePortOut;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.domain.models.Actividad;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.domain.ports.out.ActividadPersistencePortOut;
 import cl.sprint_rocket_ai.ms_checkpoint.schedulers.domain.ports.out.IAEnginePortOut;
 import cl.sprint_rocket_ai.ms_checkpoint.schedulers.domain.ports.out.NotificationPortOut;
 import org.slf4j.Logger;

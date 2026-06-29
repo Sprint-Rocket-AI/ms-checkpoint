@@ -25,8 +25,8 @@ public final class CrearRecordatorio {
         log.info("Iniciando creación de recordatorio para usuario: {}", request.userId());
 
         Recordatorio recordatorio = new Recordatorio();
-        request.applyTo(recordatorio);
         recordatorio.setActivo(true);
+        request.applyTo(recordatorio);
 
         Recordatorio saved = recordatorioPersistencePortOut.save(recordatorio);
 

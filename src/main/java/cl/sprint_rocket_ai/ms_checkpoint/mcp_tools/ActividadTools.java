@@ -2,11 +2,11 @@ package cl.sprint_rocket_ai.ms_checkpoint.mcp_tools;
 
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.Prioridad;
 import cl.sprint_rocket_ai.ms_checkpoint.commons.domain.enums.TipoActividad;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.CrearActividad;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.ListarActividadesByDesarrollador;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.application.ListarActividadesByFecha;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.infrastructure.in.dtos.ActividadResponse;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.infrastructure.in.dtos.CrearActividadRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.application.CrearActividad;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.application.ListarActividadesByDesarrollador;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.application.ListarActividadesByFecha;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.infrastructure.in.dtos.ActividadResponse;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.infrastructure.in.dtos.CrearActividadRequest;
 import org.springframework.ai.mcp.annotation.McpTool;
 import org.springframework.ai.mcp.annotation.McpToolParam; // CAMBIO: Importación mandatoria en M7
 import org.springframework.stereotype.Component;

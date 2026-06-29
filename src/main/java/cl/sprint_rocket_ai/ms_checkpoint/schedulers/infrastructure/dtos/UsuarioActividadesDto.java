@@ -1,6 +1,6 @@
 package cl.sprint_rocket_ai.ms_checkpoint.schedulers.infrastructure.dtos;
 
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.domain.models.Actividad;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.domain.models.Actividad;
 import java.util.List;
 
 public record UsuarioActividadesDto(

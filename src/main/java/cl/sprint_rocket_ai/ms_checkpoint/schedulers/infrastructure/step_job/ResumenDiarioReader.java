@@ -1,9 +1,9 @@
 package cl.sprint_rocket_ai.ms_checkpoint.schedulers.infrastructure.step_job;
 
-import cl.sprint_rocket_ai.ms_checkpoint.gestionar_usuarios.domain.models.Usuario;
-import cl.sprint_rocket_ai.ms_checkpoint.gestionar_usuarios.domain.ports.out.UsuarioPersistencePortOut;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.domain.models.Actividad;
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.domain.ports.out.ActividadPersistencePortOut;
+import cl.sprint_rocket_ai.ms_checkpoint.obtener_usuarios.domain.models.Usuario;
+import cl.sprint_rocket_ai.ms_checkpoint.obtener_usuarios.domain.ports.out.UsuarioPersistencePortOut;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.domain.models.Actividad;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.domain.ports.out.ActividadPersistencePortOut;
 import cl.sprint_rocket_ai.ms_checkpoint.schedulers.infrastructure.dtos.UsuarioActividadesDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

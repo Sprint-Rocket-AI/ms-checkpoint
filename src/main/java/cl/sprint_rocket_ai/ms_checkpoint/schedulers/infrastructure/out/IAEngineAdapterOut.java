@@ -1,6 +1,6 @@
 package cl.sprint_rocket_ai.ms_checkpoint.schedulers.infrastructure.out;
 
-import cl.sprint_rocket_ai.ms_checkpoint.registrar_tareas.domain.models.Actividad;
+import cl.sprint_rocket_ai.ms_checkpoint.gestionar_actividades.domain.models.Actividad;
 import cl.sprint_rocket_ai.ms_checkpoint.schedulers.domain.models.ResumenDiarioResult;
 import cl.sprint_rocket_ai.ms_checkpoint.schedulers.domain.models.SugerenciaActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.schedulers.domain.ports.out.IAEnginePortOut;
