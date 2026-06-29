@@ -16,7 +16,7 @@ RUN ./mvnw package -DskipTests -q
 FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-LABEL maintainer="SpringRocket IA"
+LABEL maintainer="SprintRocket IA"
 LABEL service="ms-checkpoint"
 
 RUN groupadd -r spring && useradd -r -g spring spring
@@ -24,6 +24,6 @@ USER spring
 
 COPY --from=builder /app/target/*.jar app.jar
 
-EXPOSE 8082
+EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
