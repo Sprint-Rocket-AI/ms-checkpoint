@@ -1,4 +1,4 @@
-package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.advice;
+package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.config.advice;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
