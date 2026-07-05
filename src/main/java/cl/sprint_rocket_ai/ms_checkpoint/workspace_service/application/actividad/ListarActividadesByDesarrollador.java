@@ -20,15 +20,8 @@ public final class ListarActividadesByDesarrollador {
         this.actividadRepository = actividadRepository;
     }
 
-    public List<ActividadResponse> execute(String userId, EstadoActividad estado) {
-        log.info("Listando actividades del desarrollador: {} con filtro estado: {}", userId, estado);
-
-        if (estado != null) {
-            return actividadRepository.findByUserIdAndEstado(userId, estado)
-                    .stream()
-                    .map(ActividadResponse::from)
-                    .toList();
-        }
+    public List<ActividadResponse> execute(String userId) {
+        log.info("Listando actividades del desarrollador: {} con filtro estado: {}", userId);
 
         return actividadRepository.findByUserId(userId)
                 .stream()

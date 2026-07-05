@@ -52,7 +52,7 @@ public class ActividadTools {
     public List<ActividadResponse> listarActividadesByDesarrollador(
             @McpToolParam(description = "ID del desarrollador para filtrar los checkpoints", required = true) String userId
     ) {
-        return listarActividadesByDesarrollador.execute(userId, null);
+        return listarActividadesByDesarrollador.execute(userId);
     }
 
     @McpTool(
