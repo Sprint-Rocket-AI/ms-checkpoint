@@ -64,9 +64,8 @@ public final class ActividadController implements ActividadRest {
     @Override
     @GetMapping("/desarrollador/{userId}")
     public ResponseEntity<List<ActividadResponse>> findByDesarrollador(
-            @PathVariable String userId,
-            @RequestParam(required = false) EstadoActividad estado) {
-        return ResponseEntity.ok(listarActividadesByDesarrollador.execute(userId, estado));
+            @PathVariable String userId) {
+        return ResponseEntity.ok(listarActividadesByDesarrollador.execute(userId));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad;
 
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.EstadoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActividadResponse;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActualizarActividadRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.CrearActividadRequest;
@@ -49,9 +48,7 @@ public interface ActividadRest {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = ActividadResponse.class))))
     })
     ResponseEntity<List<ActividadResponse>> findByDesarrollador(
-            @Parameter(description = "ID del desarrollador", required = true) @PathVariable String userId,
-            @Parameter(description = "Filtrar por estado de la actividad") @RequestParam(required = false) EstadoActividad estado);
-
+            @Parameter(description = "ID del desarrollador", required = true) @PathVariable String userId);
     @Operation(summary = "Actualizar actividad", description = "Actualiza una actividad existente por su identificador")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Actividad actualizada",
