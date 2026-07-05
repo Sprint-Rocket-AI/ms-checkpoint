@@ -13,17 +13,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Handler WebSocket para notificaciones de recordatorios en tiempo real.
- *
- * <p>Cada cliente se conecta a {@code ws://<host>/ws/reminders?userId=<userId>}.
- * El {@code userId} se extrae del query param en el momento de la conexión y se
- * usa para agrupar las sesiones en un {@code ConcurrentHashMap}.
- *
- * <p>Cuando un recordatorio vence, {@link ReminderEventListener} llama a
- * {@link #sendToUser(String, String)} para enviar el mensaje JSON a todas las
- * sesiones activas de ese usuario.
- */
 @Component
 public class ReminderWebSocketHandler extends AbstractWebSocketHandler {
 
