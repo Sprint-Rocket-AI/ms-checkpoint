@@ -1,8 +1,6 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.EstadoActividad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.Prioridad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models.Actividad;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -23,20 +21,12 @@ public record ActividadResponse(
         @Schema(description = "Descripción detallada de la actividad", example = "Configurar el flujo OAuth2")
         String descripcion,
 
-        @Schema(description = "Tipo de actividad", example = "TAREA")
-        TipoActividad tipo,
-
-        @Schema(description = "Prioridad de la actividad", example = "ALTA")
-        Prioridad prioridad,
-
-        @Schema(description = "Estado actual de la actividad", example = "PENDIENTE")
+        @Schema(description = "Estado de la actividad", example = "Pendiente / En Curso / Completada / Cancelada")
         EstadoActividad estado,
 
         @Schema(description = "Fecha de creación de la actividad")
-        LocalDateTime fechaCreacion,
+        LocalDateTime fechaCreacion
 
-        @Schema(description = "Fecha de última actualización")
-        LocalDateTime fechaActualizacion
 ) {
     public static ActividadResponse from(Actividad modelo) {
 
@@ -45,11 +35,8 @@ public record ActividadResponse(
                 modelo.getUserId(),
                 modelo.getTitulo(),
                 modelo.getDescripcion(),
-                modelo.getTipo(),
-                modelo.getPrioridad(),
                 modelo.getEstado(),
-                modelo.getFechaCreacion(),
-                modelo.getFechaActualizacion()
+                modelo.getFechaCreacion()
         );
     }
 }

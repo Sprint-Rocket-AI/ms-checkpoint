@@ -7,15 +7,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record ActividadParaPopUp(
 
         @Schema(description = "Título de la actividad", example = "Implementar autenticación OAuth2")
-        String titulo,
-
-        @Schema(description = "Prioridad de la actividad", example = "ALTA")
-        String prioridad
+        String titulo
 ) {
     public static ActividadParaPopUp from(Actividad actividad) {
         return new ActividadParaPopUp(
-                actividad.getTitulo(),
-                actividad.getPrioridad() != null ? actividad.getPrioridad().name() : null
+                actividad.getTitulo()
         );
     }
 }

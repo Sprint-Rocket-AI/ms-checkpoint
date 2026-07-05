@@ -36,20 +36,10 @@ public class ActividadTools {
     public String crearActividad(
             String userId,
             String titulo,
-            String descripcion,
-            TipoActividad tipo,
-            Prioridad prioridad,
-            String fechaCreacion // <-- Cambiado de LocalDate a String
+            String descripcion
     ) {
-        LocalDate fecha;
-        try {
-            fecha = (fechaCreacion != null && !fechaCreacion.isBlank()) ? LocalDate.parse(fechaCreacion) : LocalDate.now();
-        } catch (Exception e) {
-            fecha = LocalDate.now();
-        }
-
         CrearActividadRequest request = new CrearActividadRequest(
-                userId, titulo, descripcion, tipo, prioridad, fecha
+                userId, titulo, descripcion
         );
         crearActividad.execute(request);
         return "Actividad creada con éxito";

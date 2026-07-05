@@ -23,25 +23,13 @@ public record CrearActividadRequest(
         String titulo,
 
         @Schema(description = "Descripción detallada de la actividad", example = "Configurar el flujo OAuth2 con provider externo")
-        String descripcion,
+        String descripcion
 
-        @Schema(description = "Tipo de actividad", example = "TAREA")
-        @NotNull(message = "El tipo de actividad es obligatorio")
-        TipoActividad tipo,
-
-        @Schema(description = "Prioridad de la actividad", example = "ALTA")
-        @NotNull(message = "La prioridad es obligatoria")
-        Prioridad prioridad,
-
-        @Schema(description = "Fecha de creacion de la actividad", example = "2024-06-15")
-        LocalDate fechaCreacion
 
 ) {
     public void applyTo(Actividad target) {
         target.setUserId(this.userId);
         target.setTitulo(this.titulo);
         target.setDescripcion(this.descripcion);
-        target.setTipo(this.tipo);
-        target.setPrioridad(this.prioridad);
     }
 }

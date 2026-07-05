@@ -7,25 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-/**
- * Observer del patrón Observer.
- *
- * <p>Escucha {@link ReminderTriggeredEvent} publicados por {@code ReminderPollingScheduler}
- * y los reenvía al frontend vía WebSocket usando {@link ReminderWebSocketHandler}.
- *
- * <p>El mensaje enviado al cliente tiene el formato:
- * <pre>
- * {
- *   "type": "reminder.triggered",
- *   "payload": {
- *     "reminderId": "...",
- *     "userId": "...",
- *     "titulo": "...",
- *     "reminderCount": 1
- *   }
- * }
- * </pre>
- */
+
 @Component
 public class ReminderEventListener {
 
@@ -37,11 +19,6 @@ public class ReminderEventListener {
         this.reminderWebSocketHandler = reminderWebSocketHandler;
     }
 
-    /**
-     * Recibe el evento y envía el mensaje WebSocket al usuario correspondiente.
-     *
-     * @param event evento publicado por el scheduler cuando un recordatorio vence
-     */
     @EventListener
     public void onReminderTriggered(ReminderTriggeredEvent event) {
         log.info("Evento recibido: ReminderTriggeredEvent | userId='{}' recordatorioId='{}' titulo='{}'",
@@ -53,10 +30,6 @@ public class ReminderEventListener {
         log.info("Mensaje WebSocket despachado al usuario | userId='{}'", event.getUserId());
     }
 
-    /**
-     * Serializa el evento como JSON para el mensaje WebSocket.
-     * Se construye manualmente para evitar dependencia de ObjectMapper en el observer.
-     */
     private String buildWsMessage(ReminderTriggeredEvent event) {
         return String.format("""
                 {
@@ -75,7 +48,6 @@ public class ReminderEventListener {
         );
     }
 
-    /** Escapa comillas dobles en el título para JSON válido. */
     private String escapeJson(String value) {
         if (value == null) return "";
         return value.replace("\\", "\\\\").replace("\"", "\\\"");

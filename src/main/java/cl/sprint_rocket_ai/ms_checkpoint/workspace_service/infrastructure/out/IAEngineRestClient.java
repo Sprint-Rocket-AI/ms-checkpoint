@@ -144,8 +144,7 @@ public final class IAEngineRestClient {
         log.warn("Generando pop-up básico sin IA-ENGINE (fallback)");
         StringBuilder sb = new StringBuilder();
         sb.append("⚡ Actividades pendientes prioritarias:\n\n");
-        actividades.forEach(a -> sb.append("🔴 ").append(a.getTitulo())
-                .append(" [").append(a.getPrioridad()).append("]\n"));
+        actividades.forEach(a -> sb.append("🔴 ").append(a.getTitulo()));
         return sb.toString();
     }
 
