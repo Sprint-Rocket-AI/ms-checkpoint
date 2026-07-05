@@ -1,8 +1,6 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.EstadoActividad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.Prioridad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoActividad;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

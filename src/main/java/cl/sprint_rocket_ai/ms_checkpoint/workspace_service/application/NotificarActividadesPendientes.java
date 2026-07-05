@@ -51,7 +51,7 @@ public final class NotificarActividadesPendientes {
         porUsuario.forEach((userId, actividades) -> {
             try {
                 List<Actividad> actividadesPorUsuario = actividadMongoRepository
-                        .findByUserIdAndEstadoOrderByPrioridadAsc(userId, EstadoActividad.PENDIENTE);
+                        .findByUserIdAndEstado(userId, EstadoActividad.PENDIENTE);
                 List<Actividad> topActividades = actividadesPorUsuario.stream().limit(TOP_ACTIVIDADES).toList();
                 if (!topActividades.isEmpty()) {
                     String popUp = iAEngineRestClient.generatePopUp(topActividades);

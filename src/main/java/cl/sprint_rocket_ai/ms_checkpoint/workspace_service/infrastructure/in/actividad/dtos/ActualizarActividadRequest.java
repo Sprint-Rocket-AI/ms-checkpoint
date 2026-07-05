@@ -1,12 +1,8 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.EstadoActividad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.Prioridad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models.Actividad;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.time.LocalDateTime;
 
 @Schema(description = "Solicitud para actualizar una actividad existente")
 public record ActualizarActividadRequest(

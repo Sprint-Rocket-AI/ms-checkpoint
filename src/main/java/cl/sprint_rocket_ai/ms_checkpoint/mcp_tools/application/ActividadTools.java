@@ -1,7 +1,5 @@
 package cl.sprint_rocket_ai.ms_checkpoint.mcp_tools.application;
 
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.Prioridad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.actividad.CrearActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.actividad.ListarActividadesByDesarrollador;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.actividad.ListarActividadesByFecha;

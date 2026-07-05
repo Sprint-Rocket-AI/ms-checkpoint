@@ -1,6 +1,5 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.actividad;
 
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.EstadoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActividadResponse;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.persistences.mongodb.ActividadMongoRepository;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ public final class ListarActividadesByDesarrollador {
     }
 
     public List<ActividadResponse> execute(String userId) {
-        log.info("Listando actividades del desarrollador: {} con filtro estado: {}", userId);
+        log.info("Listando actividades del desarrollador: {}", userId);
 
         return actividadRepository.findByUserId(userId)
                 .stream()

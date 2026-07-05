@@ -1,14 +1,9 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos;
 
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.Prioridad;
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoActividad;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models.Actividad;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDate;
 
 @Schema(description = "Solicitud para crear una nueva actividad")
 public record CrearActividadRequest(
