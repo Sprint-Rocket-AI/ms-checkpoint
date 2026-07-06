@@ -1,7 +1,9 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActividadResponse;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActualizarActividadDescripcionRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActualizarActividadRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActualizarActividadTituloRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.CrearActividadRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -61,6 +63,28 @@ public interface ActividadRest {
     ResponseEntity<ActividadResponse> update(
             @Parameter(description = "ID de la actividad", required = true) @PathVariable String id,
             @RequestBody @Valid ActualizarActividadRequest request);
+
+    @Operation(summary = "Actualizar título de actividad", description = "Actualiza únicamente el título de una actividad existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Título actualizado",
+                    content = @Content(schema = @Schema(implementation = ActividadResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Actividad no encontrada", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content)
+    })
+    ResponseEntity<ActividadResponse> updateTitulo(
+            @Parameter(description = "ID de la actividad", required = true) @PathVariable String id,
+            @RequestBody @Valid ActualizarActividadTituloRequest request);
+
+    @Operation(summary = "Actualizar descripción de actividad", description = "Actualiza únicamente la descripción de una actividad existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Descripción actualizada",
+                    content = @Content(schema = @Schema(implementation = ActividadResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Actividad no encontrada", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content)
+    })
+    ResponseEntity<ActividadResponse> updateDescripcion(
+            @Parameter(description = "ID de la actividad", required = true) @PathVariable String id,
+            @RequestBody @Valid ActualizarActividadDescripcionRequest request);
 
     @Operation(summary = "Eliminar actividad", description = "Elimina una actividad por su identificador")
     @ApiResponses(value = {

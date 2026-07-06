@@ -1,6 +1,8 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.ActualizarRecordatorioRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.ActualizarRecordatorioFechaFinalizacionRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.ActualizarRecordatorioTituloRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.CrearRecordatorioRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.RecordatorioResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,6 +64,28 @@ public interface RecordatorioRest {
     ResponseEntity<RecordatorioResponse> update(
             @Parameter(description = "ID del recordatorio", required = true) @PathVariable String id,
             @RequestBody @Valid ActualizarRecordatorioRequest request);
+
+    @Operation(summary = "Actualizar título de recordatorio", description = "Actualiza únicamente el título de un recordatorio existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Título actualizado",
+                    content = @Content(schema = @Schema(implementation = RecordatorioResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Recordatorio no encontrado", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content)
+    })
+    ResponseEntity<RecordatorioResponse> updateTitulo(
+            @Parameter(description = "ID del recordatorio", required = true) @PathVariable String id,
+            @RequestBody @Valid ActualizarRecordatorioTituloRequest request);
+
+    @Operation(summary = "Actualizar fecha de finalización de recordatorio", description = "Actualiza únicamente la fecha de finalización/expiración de un recordatorio existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Fecha actualizada",
+                    content = @Content(schema = @Schema(implementation = RecordatorioResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Recordatorio no encontrado", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content)
+    })
+    ResponseEntity<RecordatorioResponse> updateFechaFinalizacion(
+            @Parameter(description = "ID del recordatorio", required = true) @PathVariable String id,
+            @RequestBody @Valid ActualizarRecordatorioFechaFinalizacionRequest request);
 
     @Operation(summary = "Eliminar recordatorio", description = "Elimina un recordatorio por su identificador")
     @ApiResponses(value = {

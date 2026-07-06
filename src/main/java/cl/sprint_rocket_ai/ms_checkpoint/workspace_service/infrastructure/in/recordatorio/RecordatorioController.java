@@ -1,6 +1,8 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.ActualizarRecordatorio;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.ActualizarRecordatorioFechaFinalizacion;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.ActualizarRecordatorioTitulo;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.CompletarRecordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.CrearRecordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.EliminarRecordatorio;
@@ -8,8 +10,11 @@ import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordato
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.ObtenerRecordatorioById;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.recordatorio.PosponerRecordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.ActualizarRecordatorioRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.ActualizarRecordatorioFechaFinalizacionRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.ActualizarRecordatorioTituloRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.CrearRecordatorioRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.recordatorio.dtos.RecordatorioResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,14 +41,18 @@ public final class RecordatorioController implements RecordatorioRest {
     private final EliminarRecordatorio eliminarRecordatorio;
     private final CompletarRecordatorio completarRecordatorio;
     private final PosponerRecordatorio posponerRecordatorio;
-
+    private final ActualizarRecordatorioFechaFinalizacion actualizarRecordatorioFechaFinalizacion;
+    private final ActualizarRecordatorioTitulo actualizarRecordatorioTitulo;
     public RecordatorioController(CrearRecordatorio crearRecordatorio,
                                   ObtenerRecordatorioById obtenerRecordatorioById,
                                   ListarRecordatoriosByDesarrollador listarRecordatoriosByDesarrollador,
                                   ActualizarRecordatorio actualizarRecordatorio,
                                   EliminarRecordatorio eliminarRecordatorio,
                                   CompletarRecordatorio completarRecordatorio,
-                                  PosponerRecordatorio posponerRecordatorio) {
+                                  PosponerRecordatorio posponerRecordatorio,
+                                  ActualizarRecordatorioFechaFinalizacion actualizarRecordatorioFechaFinalizacion,
+                                  ActualizarRecordatorioTitulo actualizarRecordatorioTitulo
+                                  ) {
         this.crearRecordatorio = crearRecordatorio;
         this.obtenerRecordatorioById = obtenerRecordatorioById;
         this.listarRecordatoriosByDesarrollador = listarRecordatoriosByDesarrollador;
@@ -51,6 +60,8 @@ public final class RecordatorioController implements RecordatorioRest {
         this.eliminarRecordatorio = eliminarRecordatorio;
         this.completarRecordatorio = completarRecordatorio;
         this.posponerRecordatorio = posponerRecordatorio;
+        this.actualizarRecordatorioFechaFinalizacion = actualizarRecordatorioFechaFinalizacion;
+        this.actualizarRecordatorioTitulo = actualizarRecordatorioTitulo;
     }
 
     @Override
@@ -76,6 +87,20 @@ public final class RecordatorioController implements RecordatorioRest {
     public ResponseEntity<RecordatorioResponse> update(@PathVariable String id,
                                                        @RequestBody ActualizarRecordatorioRequest request) {
         return ResponseEntity.ok(actualizarRecordatorio.execute(id, request));
+    }
+
+    @Override
+    @PatchMapping("/{id}/title")
+    public ResponseEntity<RecordatorioResponse> updateTitulo(@PathVariable String id,
+                                                            @RequestBody ActualizarRecordatorioTituloRequest request) {
+        return ResponseEntity.ok(actualizarRecordatorioTitulo.execute(id, request));
+    }
+
+    @Override
+    @PatchMapping("/{id}/date-end")
+    public ResponseEntity<RecordatorioResponse> updateFechaFinalizacion(@PathVariable String id,
+                                                                            @RequestBody ActualizarRecordatorioFechaFinalizacionRequest request) {
+        return ResponseEntity.ok(actualizarRecordatorioFechaFinalizacion.execute(id, request));
     }
 
     @Override
