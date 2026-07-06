@@ -1,6 +1,7 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models.Diagram;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoDiagrama;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -28,9 +29,12 @@ public record DiagramResponse(
         LocalDateTime fechaCreacion,
 
         @Schema(description = "Fecha de última actualización")
-        LocalDateTime fechaActualizacion
+        LocalDateTime fechaActualizacion,
 
-) {
+        @Schema(description = "Tipo de diagrama")
+        TipoDiagrama tipo
+
+ ) {
     public static DiagramResponse from(Diagram model) {
         List<DiagramNodeDTO> nodes = model.getNodes() == null ? List.of() :
                 model.getNodes().stream().map(DiagramNodeDTO::from).toList();
@@ -45,7 +49,8 @@ public record DiagramResponse(
                 nodes,
                 edges,
                 model.getFechaCreacion(),
-                model.getFechaActualizacion()
+                model.getFechaActualizacion(),
+                model.getTipo()
         );
     }
 }

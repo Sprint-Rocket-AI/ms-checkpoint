@@ -4,9 +4,15 @@ import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.diagram.A
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.diagram.CrearDiagram;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.diagram.EliminarDiagram;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.diagram.ObtenerDiagramById;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.diagram.ActualizarDiagramGraph;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.diagram.ActualizarDiagramDescription;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.diagram.ObtenerDiagramasByUsuario;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos.ActualizarDiagramRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos.ActualizarDiagramGraphRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos.ActualizarDiagramDescriptionRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos.CrearDiagramRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos.DiagramResponse;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,15 +32,24 @@ public final class DiagramController implements DiagramRest {
     private final ObtenerDiagramById obtenerDiagramById;
     private final ActualizarDiagram actualizarDiagram;
     private final EliminarDiagram eliminarDiagram;
+    private final ActualizarDiagramGraph actualizarDiagramGraph;
+    private final ActualizarDiagramDescription actualizarDiagramDescription;
+    private final ObtenerDiagramasByUsuario obtenerDiagramasByUsuario;
 
     public DiagramController(CrearDiagram crearDiagram,
                              ObtenerDiagramById obtenerDiagramById,
                              ActualizarDiagram actualizarDiagram,
-                             EliminarDiagram eliminarDiagram) {
+                             EliminarDiagram eliminarDiagram,
+                             ActualizarDiagramGraph actualizarDiagramGraph,
+                             ActualizarDiagramDescription actualizarDiagramDescription,
+                             ObtenerDiagramasByUsuario obtenerDiagramasByUsuario) {
         this.crearDiagram = crearDiagram;
         this.obtenerDiagramById = obtenerDiagramById;
         this.actualizarDiagram = actualizarDiagram;
         this.eliminarDiagram = eliminarDiagram;
+        this.actualizarDiagramGraph = actualizarDiagramGraph;
+        this.actualizarDiagramDescription = actualizarDiagramDescription;
+        this.obtenerDiagramasByUsuario = obtenerDiagramasByUsuario;
     }
 
     @Override
@@ -61,5 +76,25 @@ public final class DiagramController implements DiagramRest {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         eliminarDiagram.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @PatchMapping("/{id}/graph")
+    public ResponseEntity<DiagramResponse> updateGraph(@PathVariable String id,
+                                                       @RequestBody ActualizarDiagramGraphRequest request) {
+        return ResponseEntity.ok(actualizarDiagramGraph.execute(id, request));
+    }
+
+    @Override
+    @PatchMapping("/{id}/description")
+    public ResponseEntity<DiagramResponse> updateDescription(@PathVariable String id,
+                                                             @RequestBody ActualizarDiagramDescriptionRequest request) {
+        return ResponseEntity.ok(actualizarDiagramDescription.execute(id, request));
+    }
+
+    @Override
+    @GetMapping("/desarrollador/{userId}")
+    public ResponseEntity<List<DiagramResponse>> findByDesarrollador(@PathVariable String userId) {
+        return ResponseEntity.ok(obtenerDiagramasByUsuario.execute(userId));
     }
 }

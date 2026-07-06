@@ -1,5 +1,6 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models;
 
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoDiagrama;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -24,6 +25,12 @@ public class Diagram {
 
     @Field("edges")
     private List<DiagramEdge> edges;
+
+    @Field("tipo")
+    private TipoDiagrama tipo;
+
+    @Field("user_id")
+    private String userId;
 
     @Field("fecha_creacion")
     private LocalDateTime fechaCreacion;
@@ -72,6 +79,22 @@ public class Diagram {
 
     public void setEdges(List<DiagramEdge> edges) {
         this.edges = edges;
+    }
+
+    public TipoDiagrama getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoDiagrama tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public LocalDateTime getFechaCreacion() {

@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public final class CrearRecordatorio {
 
@@ -24,6 +26,7 @@ public final class CrearRecordatorio {
 
         Recordatorio recordatorio = new Recordatorio();
         recordatorio.setActivo(true);
+        recordatorio.setFechaCreacion(LocalDateTime.now());
         request.applyTo(recordatorio);
 
         Recordatorio saved = recordatorioRepository.save(recordatorio);

@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos.ActualizarDiagramGraphRequest;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos.ActualizarDiagramDescriptionRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +53,17 @@ public interface DiagramRest {
     ResponseEntity<DiagramResponse> updateName(
             @Parameter(description = "ID del diagrama", required = true) @PathVariable String id,
             @RequestBody @Valid ActualizarDiagramRequest request);
+
+    ResponseEntity<DiagramResponse> updateDescription(
+            @Parameter(description = "ID del diagrama", required = true) @PathVariable String id,
+            @RequestBody @Valid ActualizarDiagramDescriptionRequest request);
+
+    ResponseEntity<DiagramResponse> updateGraph(
+            @Parameter(description = "ID del diagrama", required = true) @PathVariable String id,
+            @RequestBody @Valid ActualizarDiagramGraphRequest request);
+
+    ResponseEntity<List<DiagramResponse>> findByDesarrollador(
+            @Parameter(description = "ID del usuario desarrollador", required = true) @PathVariable String userId);
 
     @Operation(summary = "Eliminar diagrama", description = "Elimina un diagrama por su identificador")
     @ApiResponses(value = {

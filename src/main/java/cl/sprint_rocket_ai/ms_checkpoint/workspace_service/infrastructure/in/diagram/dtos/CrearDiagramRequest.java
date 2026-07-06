@@ -1,8 +1,10 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.diagram.dtos;
 
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models.Diagram;
+import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.TipoDiagrama;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -18,19 +20,20 @@ public record CrearDiagramRequest(
         @Schema(description = "Descripción del diagrama", example = "Diagrama del flujo OAuth2")
         String description,
 
-        @Schema(description = "Lista de nodos del diagrama")
-        List<DiagramNodeDTO> nodes,
 
-        @Schema(description = "Lista de aristas del diagrama")
-        List<DiagramEdgeDTO> edges
+        @Schema(description = "Tipo de diagrama", example = "FLUJO")
+        @NotNull(message = "El tipo de diagrama es obligatorio")
+        TipoDiagrama tipo,
+
+        @Schema(description = "ID del usuario desarrollador", example = "user-123")
+        @NotBlank(message = "El ID del usuario es obligatorio")
+        String userId
 
 ) {
     public void applyTo(Diagram target) {
         target.setName(this.name);
         target.setDescription(this.description);
-        target.setNodes(this.nodes == null ? List.of() :
-                this.nodes.stream().map(DiagramNodeDTO::toModel).toList());
-        target.setEdges(this.edges == null ? List.of() :
-                this.edges.stream().map(DiagramEdgeDTO::toModel).toList());
+        target.setTipo(this.tipo);
+        target.setUserId(this.userId);
     }
 }
