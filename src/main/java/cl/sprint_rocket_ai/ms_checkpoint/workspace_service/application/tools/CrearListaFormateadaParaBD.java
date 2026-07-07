@@ -16,7 +16,7 @@ public class CrearListaFormateadaParaBD {
     }
 
     public static FormatToListResponse construir(FormatToListRequest request) {
-        Set<String> unicos = removeDuplicates(request.valores());
+        Set<String> unicos = removeDuplicates(request.valores().lines().toList());
         String contenido = switch (request.tipo()) {
             case STRING -> formatString(unicos);
             case INT    -> formatInt(unicos);
