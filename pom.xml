@@ -29,6 +29,13 @@
 	<properties>
 		<java.version>25</java.version>
 		<spring-ai.version>2.0.0</spring-ai.version>
+		<sonar.coverage.exclusions>
+			**/MsCheckpointApplication.java,
+			**/dtos/**,
+			**/models/**,
+			**/entity/**,
+			**/events/**
+		</sonar.coverage.exclusions>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
