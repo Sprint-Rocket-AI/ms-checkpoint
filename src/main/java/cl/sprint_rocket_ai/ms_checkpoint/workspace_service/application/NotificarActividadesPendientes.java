@@ -35,7 +35,7 @@ public final class NotificarActividadesPendientes {
     public void execute() {
         log.info("Iniciando notificación de actividades pendientes más importantes");
 
-        LocalDateTime fechaInicio = LocalDateTime.now().minusMonths(1);
+        LocalDateTime fechaInicio = LocalDateTime.now().minusHours(1);
         LocalDateTime fechaFin = LocalDateTime.now();
         List<Actividad> pendientes = actividadMongoRepository
                 .findByEstadoAndFechaCreacionBetween(EstadoActividad.PENDIENTE, fechaInicio, fechaFin);
