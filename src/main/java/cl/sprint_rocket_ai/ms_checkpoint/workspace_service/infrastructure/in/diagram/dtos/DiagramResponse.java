@@ -25,6 +25,9 @@ public record DiagramResponse(
         @Schema(description = "Lista de aristas del diagrama")
         List<DiagramEdgeDTO> edges,
 
+        @Schema(description = "Identificador del usuario propietario del diagrama", example = "user123")
+        String userId,
+
         @Schema(description = "Fecha de creación del diagrama")
         LocalDateTime fechaCreacion,
 
@@ -48,6 +51,7 @@ public record DiagramResponse(
                 model.getDescription(),
                 nodes,
                 edges,
+                model.getUserId(),
                 model.getFechaCreacion(),
                 model.getFechaActualizacion(),
                 model.getTipo()
