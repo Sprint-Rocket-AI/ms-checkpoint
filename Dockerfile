@@ -1,29 +1,26 @@
-# ── Stage 1: Build ──────────────────────────────────────────
+# ---------- BUILD ----------
 FROM eclipse-temurin:25-jdk AS builder
-WORKDIR /app
+
+WORKDIR /build
 
 COPY .mvn/ .mvn/
 COPY mvnw .
 RUN chmod +x mvnw
 
 COPY pom.xml .
-RUN ./mvnw dependency:go-offline -q
+RUN ./mvnw -B -q -e -DskipTests dependency:go-offline
 
 COPY src ./src
-RUN ./mvnw package -DskipTests -q
+RUN ./mvnw -B -DskipTests package
 
-# ── Stage 2: Runtime ─────────────────────────────────────────
+# ---------- RUNTIME ----------
 FROM eclipse-temurin:25-jre
+
 WORKDIR /app
 
-LABEL maintainer="SprintRocket IA"
-LABEL service="ms-checkpoint"
+COPY --from=builder /build/target/*.jar app.jar
 
-RUN groupadd -r spring && useradd -r -g spring spring
-USER spring
-
-COPY --from=builder /app/target/*.jar app.jar
-
+ENV PORT=8080
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar --server.port=$PORT"]
