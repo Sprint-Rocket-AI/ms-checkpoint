@@ -16,22 +16,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Subject del patrón Observer.
- *
- * <p>Se ejecuta cada 30 segundos y consulta MongoDB buscando recordatorios activos
- * cuyo {@code proximoEnvio} ya pasó ({@code <= ahora}).
- *
- * <p>Por cada recordatorio vencido:
- * <ol>
- *   <li>Publica un {@link ReminderTriggeredEvent} vía {@link ApplicationEventPublisher}.</li>
- *   <li>Actualiza {@code proximoEnvio} según el tipo de recurrencia para la próxima ejecución.</li>
- *   <li>Si el recordatorio llegó a su {@code fechaExpiracion}, lo desactiva.</li>
- * </ol>
- *
- * <p>Propiedad de configuración: {@code schedulers.reminder-polling.fixed-delay} (ms)
- * <br>Default: {@code 30000} (30 segundos)
- */
+
 @Component
 public class ReminderPollingScheduler {
 
@@ -112,48 +97,8 @@ public class ReminderPollingScheduler {
         recordatorioRepository.save(recordatorio);
     }
 
-    /**
-     * Verifica si el recordatorio aplica para el día de la semana actual.
-     * Los de tipo DIARIO y HORA_POR_HORA siempre aplican.
-     * Los de tipo SEMANAL y CUSTOM verifican la lista de {@code diasSemana}.
-     */
-    private boolean aplicaHoy(Recordatorio recordatorio) {
-        return true;
-    }
-
-    /**
-     * Calcula y asigna el próximo {@code proximoEnvio} según el tipo de recurrencia.
-     *
-     * <ul>
-     *   <li>{@code DIARIO} → +24 horas</li>
-     *   <li>{@code HORA_POR_HORA} → +1 hora</li>
-     *   <li>{@code SEMANAL} → +7 días (a la misma hora de activación)</li>
-     *   <li>{@code CUSTOM} / {@code EVENTO} → desactiva (disparo único)</li>
-     * </ul>
-     */
     private void actualizarProximoEnvio(Recordatorio recordatorio) {
         // Simplified
     }
 
-    private int parseHora(String horaActivacion) {
-        if (horaActivacion == null) return 0;
-        return Integer.parseInt(horaActivacion.split(":")[0]);
-    }
-
-    private int parseMinuto(String horaActivacion) {
-        if (horaActivacion == null) return 0;
-        return Integer.parseInt(horaActivacion.split(":")[1]);
-    }
-
-    private DiaSemana mapDayOfWeek(DayOfWeek dayOfWeek) {
-        return switch (dayOfWeek) {
-            case MONDAY -> DiaSemana.LUNES;
-            case TUESDAY -> DiaSemana.MARTES;
-            case WEDNESDAY -> DiaSemana.MIERCOLES;
-            case THURSDAY -> DiaSemana.JUEVES;
-            case FRIDAY -> DiaSemana.VIERNES;
-            case SATURDAY -> DiaSemana.SABADO;
-            case SUNDAY -> DiaSemana.DOMINGO;
-        };
-    }
 }

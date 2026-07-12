@@ -2,13 +2,6 @@ package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.events;
 
 import org.springframework.context.ApplicationEvent;
 
-/**
- * Evento de dominio publicado cuando un recordatorio vence y debe notificarse
- * al usuario vía WebSocket.
- *
- * <p>Publicado por {@code ReminderPollingScheduler} vía {@code ApplicationEventPublisher}.
- * Consumido por {@code ReminderEventListener} que reenvía el mensaje al frontend.
- */
 public class ReminderTriggeredEvent extends ApplicationEvent {
 
     private final String recordatorioId;

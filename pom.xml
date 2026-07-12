@@ -29,6 +29,13 @@
 	<properties>
 		<java.version>25</java.version>
 		<spring-ai.version>2.0.0</spring-ai.version>
+		<sonar.coverage.exclusions>
+			**/MsCheckpointApplication.java,
+			**/dtos/**,
+			**/models/**,
+			**/entity/**,
+			**/events/**
+		</sonar.coverage.exclusions>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -127,6 +134,37 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<mainClass>cl.sprint_rocket_ai.ms_checkpoint.MsCheckpointApplication</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.14</version> <executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+
+					<excludes>
+
+						<exclude>**/*Application.class</exclude>
+						<exclude>**/dtos/**</exclude>
+						<exclude>**/models/**</exclude>
+						<exclude>**/entity/**</exclude>
+						<exclude>**/events/**</exclude>
+
+					</excludes>
+
 				</configuration>
 			</plugin>
 		</plugins>
