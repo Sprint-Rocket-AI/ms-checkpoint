@@ -45,7 +45,7 @@ class ActividadToolsTest {
         ArgumentCaptor<CrearActividadRequest> captor = ArgumentCaptor.forClass(CrearActividadRequest.class);
 
         // When
-        String result = actividadTools.crearActividad("user-1", "Mi tarea", "Descripción");
+        String result = actividadTools.crearActividad("user-1", "Mi tarea", null);
 
         // Then
         verify(crearActividad).execute(captor.capture());
@@ -63,7 +63,7 @@ class ActividadToolsTest {
         when(listarActividadesByDesarrollador.execute("user-1")).thenReturn(expected);
 
         // When
-        List<ActividadResponse> result = actividadTools.listarActividadesByDesarrollador("user-1");
+        List<ActividadResponse> result = actividadTools.listarActividadesByDesarrollador(null);
 
         // Then
         assertEquals(2, result.size());
@@ -79,7 +79,7 @@ class ActividadToolsTest {
         when(listarActividadesByFecha.execute("user-1", fecha)).thenReturn(expected);
 
         // When
-        List<ActividadResponse> result = actividadTools.listarActividadesByFecha("user-1", fecha);
+        List<ActividadResponse> result = actividadTools.listarActividadesByFecha(fecha, null);
 
         // Then
         assertEquals(1, result.size());
