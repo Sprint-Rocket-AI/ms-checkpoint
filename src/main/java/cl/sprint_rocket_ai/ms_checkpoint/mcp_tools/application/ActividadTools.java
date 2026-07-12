@@ -5,7 +5,7 @@ import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.actividad
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.actividad.ListarActividadesByFecha;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.ActividadResponse;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.actividad.dtos.CrearActividadRequest;
-import org.springframework.ai.chat.model.ToolContext;
+import org.springframework.ai.mcp.annotation.McpMeta;
 import org.springframework.ai.mcp.annotation.McpTool;
 import org.springframework.ai.mcp.annotation.McpToolParam; // CAMBIO: Importación mandatoria en M7
 import org.springframework.stereotype.Component;
@@ -35,9 +35,9 @@ public class ActividadTools {
     public String crearActividad(
             String titulo,
             String descripcion,
-            ToolContext ctx
+            McpMeta meta
     ) {
-        String userId = getUserIdFromContext(ctx);
+        String userId = getUserIdFromMeta(meta);
 
         CrearActividadRequest request = new CrearActividadRequest(
                 userId, titulo, descripcion
@@ -51,9 +51,9 @@ public class ActividadTools {
             description = "Lista todas las actividades del desarrollador autenticado"
     )
     public List<ActividadResponse> listarActividadesByDesarrollador(
-            ToolContext ctx
+            McpMeta meta
     ) {
-        String userId = getUserIdFromContext(ctx);
+        String userId = getUserIdFromMeta(meta);
         return listarActividadesByDesarrollador.execute(userId);
     }
 
@@ -63,24 +63,24 @@ public class ActividadTools {
     )
     public List<ActividadResponse> listarActividadesByFecha(
             @McpToolParam(description = "Fecha de consulta en formato ISO YYYY-MM-DD", required = true) LocalDate fecha,
-            ToolContext ctx
+            McpMeta meta
     ) {
-        String userId = getUserIdFromContext(ctx);
+        String userId = getUserIdFromMeta(meta);
         return listarActividadesByFecha.execute(userId, fecha);
     }
 
     /**
      * Método helper privado para reutilizar la extracción segura del X-User-Id
      */
-    private String getUserIdFromContext(ToolContext ctx) {
-        if (ctx == null || ctx.getContext() == null) {
-            throw new IllegalArgumentException("El ToolContext o el contexto interno no pueden ser nulos.");
+    private String getUserIdFromMeta(McpMeta meta) {
+        if (meta == null) {
+            throw new IllegalArgumentException("El McpMeta no puede ser nulo.");
         }
 
-        String userId = (String) ctx.getContext().get("X-User-Id");
+        String userId = (String) meta.get("userId");
 
         if (userId == null || userId.isBlank()) {
-            throw new IllegalArgumentException("No se encontró el identificador del usuario (X-User-Id) en el contexto de transporte MCP.");
+            throw new IllegalArgumentException("No se encontró el identificador del usuario (userId) en el _meta de la request MCP.");
         }
 
         return userId;
