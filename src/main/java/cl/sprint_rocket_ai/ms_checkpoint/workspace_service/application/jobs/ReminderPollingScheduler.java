@@ -1,6 +1,5 @@
 package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.jobs;
 
-import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.enums.DiaSemana;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.events.ReminderTriggeredEvent;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.domain.models.Recordatorio;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.persistences.mongodb.RecordatorioMongoRepository;
@@ -10,7 +9,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -65,13 +63,11 @@ public class ReminderPollingScheduler {
     private void procesarVencido(Recordatorio recordatorio) {
         String id = recordatorio.getId();
 
-        // 1. Incrementar contador de disparos
         int count = reminderCountMap.merge(id, 1, Integer::sum);
 
         log.info("Disparando recordatorio | id='{}' userId='{}' titulo='{}' count={}",
                 id, recordatorio.getUserId(), recordatorio.getTitulo(), count);
 
-        // 3. Publicar evento → Observer (ReminderEventListener) → WebSocket
         eventPublisher.publishEvent(new ReminderTriggeredEvent(
                 this,
                 id,
@@ -80,10 +76,8 @@ public class ReminderPollingScheduler {
                 count
         ));
 
-        // 4. Calcular próximo envío y verificar expiración
         actualizarProximoEnvio(recordatorio);
 
-        // 5. Si superó la fecha de expiración, desactivar
         if (recordatorio.getFechaExpiracion() != null
                 && LocalDateTime.now().isAfter(recordatorio.getFechaExpiracion())) {
             recordatorio.setActivo(false);
@@ -92,7 +86,6 @@ public class ReminderPollingScheduler {
                     id, recordatorio.getFechaExpiracion());
         }
 
-        // 6. Persistir cambios
         recordatorio.setFechaCreacion(LocalDateTime.now());
         recordatorioRepository.save(recordatorio);
     }

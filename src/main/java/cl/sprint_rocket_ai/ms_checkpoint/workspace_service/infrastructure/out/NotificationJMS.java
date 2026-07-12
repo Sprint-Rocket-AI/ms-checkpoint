@@ -34,12 +34,6 @@ public final class NotificationJMS {
         log.info("Notificación enviada exitosamente al desarrollador: {}", userId);
     }
 
-    public void notifyLider(String liderTecnicoId, String contenido) {
-        log.info("Enviando notificación al líder técnico: {}", liderTecnicoId);
-        sendEmail(liderTecnicoId + "@empresa.com", "Notificación de SpringRocket", contenido);
-        log.info("Notificación enviada exitosamente al líder técnico: {}", liderTecnicoId);
-    }
-
     public void notifyDeveloperWithSummary(String userId, String correo, String resumen, List<SugerenciaActividad> sugerencias) {
         log.info("Preparando correo resumen diario para el desarrollador: {} a su correo {}", userId, correo);
         String response = mailResponseBuilder.buildDailySummary(userId, resumen, sugerencias);

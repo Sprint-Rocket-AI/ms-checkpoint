@@ -35,31 +35,6 @@ public final class IAEngineRestClient {
         this.restClient = restClient;
     }
 
-    public String generateSummary(List<Actividad> actividades) {
-        log.info("Solicitando resumen a IA-ENGINE con {} actividades", actividades.size());
-        try {
-            Map<String, Object> request = Map.of(
-                    "actividades", actividades.stream().map(ActividadParaPopUp::from).toList(),
-                    "tipo", "RESUMEN_DIARIO"
-            );
-
-            String response = restClient.post()
-                    .uri(SUMMARY_PATH)
-                    .body(request)
-                    .retrieve()
-                    .body(String.class);
-            log.info("Resumen generado exitosamente por IA-ENGINE");
-            return response;
-        } catch (RestClientResponseException e) {
-            log.error("Error HTTP {} al comunicarse con IA-ENGINE para generar resumen: {}",
-                    e.getStatusCode(), e.getResponseBodyAsString());
-            return generarResumenFallback(actividades);
-        } catch (Exception e) {
-            log.error("Error al comunicarse con IA-ENGINE para generar resumen: {}", e.getMessage());
-            return generarResumenFallback(actividades);
-        }
-    }
-
     public String generatePopUp(List<Actividad> actividades) {
         log.info("Solicitando pop-up a IA-ENGINE con {} actividades", actividades.size());
         try {
@@ -129,15 +104,6 @@ public final class IAEngineRestClient {
                     userId, e.getMessage());
             return generarResumenDiarioFallback(actividades);
         }
-    }
-
-    private String generarResumenFallback(List<Actividad> actividades) {
-        log.warn("Generando resumen básico sin IA-ENGINE (fallback)");
-        StringBuilder sb = new StringBuilder();
-        sb.append("📋 Resumen de actividades completadas:\n\n");
-        actividades.forEach(a -> sb.append("✅ ").append(a.getTitulo()).append("\n"));
-        sb.append("\nTotal: ").append(actividades.size()).append(" actividades completadas.");
-        return sb.toString();
     }
 
     private String generarPopUpFallback(List<Actividad> actividades) {
