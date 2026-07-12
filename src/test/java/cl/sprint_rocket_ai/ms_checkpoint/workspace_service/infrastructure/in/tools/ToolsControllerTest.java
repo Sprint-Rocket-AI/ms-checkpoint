@@ -33,7 +33,8 @@ class ToolsControllerTest {
             FormatToListRequest request = new FormatToListRequest(
                     "POLICY_ID",
                     CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "0-134095,0-134104,0-134119"
+                    "0-134095,0-134104,0-134119",
+                    true
             );
 
             // When
@@ -52,7 +53,8 @@ class ToolsControllerTest {
             FormatToListRequest request = new FormatToListRequest(
                     "USER_ID",
                     CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "u-1,u-2,u-3"
+                    "u-1,u-2,u-3",
+                    true
             );
 
             // When
@@ -69,7 +71,8 @@ class ToolsControllerTest {
             FormatToListRequest request = new FormatToListRequest(
                     "CANTIDAD",
                     CrearListaFormateadaParaBD.TipoDato.INT,
-                    "1\n2\n3"
+                    "1\n2\n3",
+                    true
             );
 
             // When
@@ -88,7 +91,8 @@ class ToolsControllerTest {
             FormatToListRequest request = new FormatToListRequest(
                     "NOMBRE",
                     CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "alpha\nbeta"
+                    "alpha\nbeta",
+                    true
             );
 
             // When
@@ -107,7 +111,8 @@ class ToolsControllerTest {
             FormatToListRequest request = new FormatToListRequest(
                     "COL",
                     CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "v1"
+                    "v1",
+                    true
             );
             FormatToListResponse expectedFromUtility = CrearListaFormateadaParaBD.construir(request);
 

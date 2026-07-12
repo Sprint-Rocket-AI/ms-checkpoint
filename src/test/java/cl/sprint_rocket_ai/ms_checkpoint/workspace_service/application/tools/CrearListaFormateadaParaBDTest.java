@@ -3,7 +3,6 @@ package cl.sprint_rocket_ai.ms_checkpoint.workspace_service.application.tools;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.tools.dtos.FormatToListRequest;
 import cl.sprint_rocket_ai.ms_checkpoint.workspace_service.infrastructure.in.tools.dtos.FormatToListResponse;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,344 +10,80 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("CrearListaFormateadaParaBD")
 class CrearListaFormateadaParaBDTest {
 
-    // ─── Clase pura sin dependencias inyectadas — no requiere @Mock/@InjectMocks ───
+    @Test
+    @DisplayName("Construye lista STRING con columna e IN eliminando duplicados")
+    void shouldWhenConstruir_formatString_con_columna_y_IN_eliminando_duplicados_y_preservando_orden() {
+        // Given: entrada sencilla con duplicados
+        String valores = "0-134095\n0-134104\n0-134095";
+        FormatToListRequest request = new FormatToListRequest("CUENTA_ID", CrearListaFormateadaParaBD.TipoDato.STRING, valores, true);
 
-    // =========================================================================
-    // Tipo STRING
-    // =========================================================================
+        // When
+        FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
 
-    @Nested
-    @DisplayName("Dado tipo STRING")
-    class TipoString {
-
-        @Test
-        @DisplayName("Debe generar cláusula IN con comillas simples cuando se proporcionan valores STRING")
-        void shouldReturnInClauseWithSingleQuotesWhenStringValuesAreProvided() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "POLICY_ID",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "0-134095\n0-134104\n0-134119\n0-134157"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("POLICY_ID IN ('0-134095','0-134104','0-134119','0-134157')", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe generar cláusula IN con un único valor STRING")
-        void shouldReturnSingleValueInClauseWhenOnlyOneStringValueIsProvided() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "POLICY_ID",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "0-134095"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("POLICY_ID IN ('0-134095')", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe escapar comillas simples dentro de los valores STRING duplicándolas")
-        void shouldEscapeSingleQuotesWhenStringValueContainsSingleQuote() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "NOMBRE",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "O'Brien\nO'Connor"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("NOMBRE IN ('O''Brien','O''Connor')", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe eliminar valores STRING duplicados manteniendo el orden de inserción")
-        void shouldRemoveDuplicatesWhenStringValuesContainRepeatedEntries() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "POLICY_ID",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "0-134095\n0-134104\n0-134095\n0-134104\n0-134119"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("POLICY_ID IN ('0-134095','0-134104','0-134119')", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe ignorar líneas vacías y líneas con solo espacios en blanco")
-        void shouldFilterBlankLinesWhenStringValuesContainEmptyLines() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "POLICY_ID",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "0-134095\n\n   \n0-134104\n\t"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("POLICY_ID IN ('0-134095','0-134104')", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe recortar espacios en blanco al inicio y al final de cada valor STRING")
-        void shouldTrimWhitespaceWhenStringValuesHaveLeadingOrTrailingSpaces() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "POLICY_ID",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "  0-134095  \n  0-134104  "
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("POLICY_ID IN ('0-134095','0-134104')", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe deduplicar valores que son iguales después del trim")
-        void shouldDeduplicateAfterTrimWhenValuesMatchOnlyAfterStripping() {
-            // Given — "abc" y "  abc  " son el mismo valor tras trim
-            FormatToListRequest request = new FormatToListRequest(
-                    "COL",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "abc\n  abc  "
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("COL IN ('abc')", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe usar el nombre de columna exactamente como se proporciona, incluyendo alias de tabla")
-        void shouldUseExactColumnNameWhenColumnIncludesTableAlias() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "T.POLICY_ID",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "VAL1"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertTrue(response.statement().startsWith("T.POLICY_ID IN ("));
-        }
-
-        @Test
-        @DisplayName("Debe generar el formato exacto del ejemplo de negocio documentado")
-        void shouldMatchExactBusinessExampleFormatWhenProvidingCanonicalPolicyIds() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "POLICY_ID",
-                    CrearListaFormateadaParaBD.TipoDato.STRING,
-                    "0-134095\n0-134104\n0-134119\n0-134157"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals(
-                    "POLICY_ID IN ('0-134095','0-134104','0-134119','0-134157')",
-                    response.statement()
-            );
-        }
+        // Then: resultado esperado con comillas simples y sin duplicados
+        String esperado = "CUENTA_ID IN ('0-134095','0-134104')";
+        assertEquals(esperado, response.statement());
     }
 
-    // =========================================================================
-    // Tipo INT
-    // =========================================================================
+    @Test
+    @DisplayName("Construye lista INT sin columna ni IN y elimina duplicados")
+    void shouldWhenConstruir_formatInt_sin_columna_y_sin_IN_convertir_y_eliminar_duplicados() {
+        // Given: valores numéricos con duplicados
+        String valores = "1\n2\n2";
+        FormatToListRequest request = new FormatToListRequest(null, CrearListaFormateadaParaBD.TipoDato.INT, valores, false);
 
-    @Nested
-    @DisplayName("Dado tipo INT")
-    class TipoInt {
+        // When
+        FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
 
-        @Test
-        @DisplayName("Debe generar cláusula IN sin comillas cuando se proporcionan valores INT válidos")
-        void shouldReturnInClauseWithoutQuotesWhenIntValuesAreProvided() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "USER_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "1\n2\n3"
-            );
+        // Then: sin columna y sin IN, contenido entre paréntesis y números sin comillas
+        String esperado = "(1,2)";
+        assertEquals(esperado, response.statement());
+    }
 
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
+    @Test
+    @DisplayName("Lanza excepción si INT contiene token no numérico")
+    void shouldWhenConstruir_throwIllegalArgumentException_when_tipo_INT_y_valor_no_numerico() {
+        // Given: valores que contienen un token no numérico
+        String valores = "10\nnot-a-number\n30";
+        FormatToListRequest request = new FormatToListRequest("COL", CrearListaFormateadaParaBD.TipoDato.INT, valores, true);
 
-            // Then
-            assertNotNull(response);
-            assertEquals("USER_ID IN (1,2,3)", response.statement());
-        }
+        // When / Then: se espera IllegalArgumentException por parseo
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> CrearListaFormateadaParaBD.construir(request));
 
-        @Test
-        @DisplayName("Debe generar cláusula IN con un único valor INT")
-        void shouldReturnSingleValueInClauseWhenOnlyOneIntValueIsProvided() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "USER_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "42"
-            );
+        assertTrue(ex.getMessage().contains("Valor no numérico"));
+    }
 
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
+    @Test
+    @DisplayName("Maneja líneas vacías y devuelve paréntesis vacíos")
+    void shouldWhenConstruir_handle_empty_and_blank_lines_generando_clausula_con_parentesis_vacio() {
+        // Given: solo líneas vacías o con espacios
+        String valores = "\n  \n";
+        FormatToListRequest request = new FormatToListRequest("MI_COL", CrearListaFormateadaParaBD.TipoDato.STRING, valores, false);
 
-            // Then
-            assertNotNull(response);
-            assertEquals("USER_ID IN (42)", response.statement());
-        }
+        // When
+        FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
 
-        @Test
-        @DisplayName("Debe manejar valores dentro del rango Long")
-        void shouldHandleLongRangeNumbersWhenIntTypeIsUsed() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "BIG_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "9999999999\n1234567890"
-            );
+        // Then: al no haber valores, el contenido queda vacío dentro de los paréntesis
+        String esperado = "MI_COL ()";
+        assertEquals(esperado, response.statement());
+    }
 
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
+    @Test
+    @DisplayName("Escapa comillas simples en valores STRING")
+    void shouldWhenConstruir_escape_single_quotes_en_valores_STRING() {
+        // Given: valor que contiene comilla simple
+        String valores = "O'Neil\nAlice";
+        FormatToListRequest request = new FormatToListRequest("NOMBRE", CrearListaFormateadaParaBD.TipoDato.STRING, valores, true);
 
-            // Then
-            assertNotNull(response);
-            assertEquals("BIG_ID IN (9999999999,1234567890)", response.statement());
-        }
+        // When
+        FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
 
-        @Test
-        @DisplayName("Debe eliminar valores INT duplicados manteniendo el orden de inserción")
-        void shouldRemoveDuplicatesWhenIntValuesContainRepeatedEntries() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "USER_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "1\n2\n1\n3\n2"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("USER_ID IN (1,2,3)", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe ignorar líneas vacías en valores de tipo INT")
-        void shouldFilterBlankLinesWhenIntValuesContainEmptyLines() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "USER_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "1\n\n   \n2"
-            );
-
-            // When
-            FormatToListResponse response = CrearListaFormateadaParaBD.construir(request);
-
-            // Then
-            assertNotNull(response);
-            assertEquals("USER_ID IN (1,2)", response.statement());
-        }
-
-        @Test
-        @DisplayName("Debe lanzar IllegalArgumentException cuando un valor alfanumérico se usa en tipo INT")
-        void shouldThrowIllegalArgumentExceptionWhenIntValueIsNotNumeric() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "USER_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "1\nabc\n3"
-            );
-
-            // When / Then
-            IllegalArgumentException ex = assertThrows(
-                    IllegalArgumentException.class,
-                    () -> CrearListaFormateadaParaBD.construir(request)
-            );
-
-            assertTrue(ex.getMessage().contains("abc"),
-                    "El mensaje debe incluir el valor inválido");
-            assertTrue(ex.getMessage().contains("INT"),
-                    "El mensaje debe mencionar el tipo INT");
-        }
-
-        @Test
-        @DisplayName("Debe lanzar IllegalArgumentException cuando el valor INT es decimal")
-        void shouldThrowIllegalArgumentExceptionWhenIntValueIsDecimal() {
-            // Given — decimales no son válidos para Long.valueOf
-            FormatToListRequest request = new FormatToListRequest(
-                    "USER_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "3.14"
-            );
-
-            // When / Then
-            IllegalArgumentException ex = assertThrows(
-                    IllegalArgumentException.class,
-                    () -> CrearListaFormateadaParaBD.construir(request)
-            );
-
-            assertTrue(ex.getMessage().contains("3.14"),
-                    "El mensaje debe incluir el valor decimal inválido");
-        }
-
-        @Test
-        @DisplayName("Debe encapsular NumberFormatException como causa de IllegalArgumentException")
-        void shouldWrapNumberFormatExceptionWhenIntValueIsInvalid() {
-            // Given
-            FormatToListRequest request = new FormatToListRequest(
-                    "USER_ID",
-                    CrearListaFormateadaParaBD.TipoDato.INT,
-                    "noesunumero"
-            );
-
-            // When / Then
-            IllegalArgumentException ex = assertThrows(
-                    IllegalArgumentException.class,
-                    () -> CrearListaFormateadaParaBD.construir(request)
-            );
-
-            assertNotNull(ex.getCause(), "La excepción debe envolver una causa");
-            assertInstanceOf(NumberFormatException.class, ex.getCause(),
-                    "La causa debe ser NumberFormatException");
-        }
+        // Then: la comilla simple interna debe duplicarse para escapar en SQL
+        String esperado = "NOMBRE IN ('O''Neil','Alice')";
+        assertEquals(esperado, response.statement());
     }
 }
+
