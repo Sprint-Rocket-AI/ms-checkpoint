@@ -21,8 +21,27 @@ public class CrearListaFormateadaParaBD {
             case STRING -> formatString(unicos);
             case INT    -> formatInt(unicos);
         };
-        String statement = request.columna() + " IN (" + contenido + ")";
+        String statement = generateStatement(request.columna(), request.addIn(), contenido);
         return new FormatToListResponse(statement);
+    }
+
+    private static String generateStatement(String column, boolean addIn, String content) {
+        final String FORMAT_WITH_COLUMN = "%s (%s)";
+        final String FORMAT_WITH_IN = "%s IN (%s)";
+        final String FORMAT_NO_COLUMN = "(%s)";
+        final String FORMAT_NO_COLUMN_IN = "IN (%s)";
+
+        boolean hasColumn = column != null && !column.isBlank();
+
+        if (addIn) {
+            return hasColumn
+                    ? String.format(FORMAT_WITH_IN, column, content)
+                    : String.format(FORMAT_NO_COLUMN_IN, content);
+        }
+
+        return hasColumn
+                ? String.format(FORMAT_WITH_COLUMN, column, content)
+                : String.format(FORMAT_NO_COLUMN, content);
     }
 
     private static Set<String> removeDuplicates(Collection<?> valores) {
