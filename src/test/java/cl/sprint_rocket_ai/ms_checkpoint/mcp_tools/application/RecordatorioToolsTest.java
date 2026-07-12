@@ -49,7 +49,7 @@ class RecordatorioToolsTest {
 
             // When
             RecordatorioResponse result = recordatorioTools.crearRecordatorio(
-                    "user-1", "Reunión", "2026-12-31T23:59:59");
+                    "user-1",  "2026-12-31T23:59:59", null);
 
             // Then
             verify(crearRecordatorio).execute(captor.capture());
@@ -82,7 +82,7 @@ class RecordatorioToolsTest {
             ArgumentCaptor<CrearRecordatorioRequest> captor = ArgumentCaptor.forClass(CrearRecordatorioRequest.class);
 
             // When
-            recordatorioTools.crearRecordatorio("user-1", "Tarea", "   ");
+            recordatorioTools.crearRecordatorio("user-1", "Tarea", null);
 
             // Then
             verify(crearRecordatorio).execute(captor.capture());
@@ -98,7 +98,7 @@ class RecordatorioToolsTest {
             LocalDateTime antes = LocalDateTime.now().plusDays(1).minusSeconds(2);
 
             // When
-            recordatorioTools.crearRecordatorio("user-1", "Tarea", "fecha-invalida");
+            recordatorioTools.crearRecordatorio("user-1", "fecha-invalida", null);
 
             // Then
             verify(crearRecordatorio).execute(captor.capture());
@@ -120,7 +120,7 @@ class RecordatorioToolsTest {
             when(listarRecordatoriosByDesarrollador.execute("user-1")).thenReturn(expected);
 
             // When
-            List<RecordatorioResponse> result = recordatorioTools.listarRecordatoriosByDesarrollador("user-1");
+            List<RecordatorioResponse> result = recordatorioTools.listarRecordatoriosByDesarrollador(null);
 
             // Then
             assertEquals(2, result.size());
