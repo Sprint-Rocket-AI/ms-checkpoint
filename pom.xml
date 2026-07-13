@@ -154,17 +154,12 @@
 					</execution>
 				</executions>
 				<configuration>
-
 					<excludes>
-
-						<exclude>**/*Application.class</exclude>
+						<exclude>**/*MsCheckpointApplication.class</exclude>
 						<exclude>**/dtos/**</exclude>
 						<exclude>**/models/**</exclude>
-						<exclude>**/entity/**</exclude>
 						<exclude>**/events/**</exclude>
-
 					</excludes>
-
 				</configuration>
 			</plugin>
 		</plugins>
