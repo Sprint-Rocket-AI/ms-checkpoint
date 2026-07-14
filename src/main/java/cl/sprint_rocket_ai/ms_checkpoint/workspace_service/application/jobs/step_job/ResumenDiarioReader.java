@@ -50,7 +50,7 @@ public class ResumenDiarioReader {
         porUsuario.forEach((userId, actividades) -> {
             String correo = usuarioRepository.findByUserId(userId)
                     .map(Usuario::getCorreo)
-                    .orElse("sin_correo@empresa.com");
+                    .orElse("sebascarrenom@gmail.com");
 
             resultados.add(new UsuarioActividadesDto(userId, correo, actividades));
         });

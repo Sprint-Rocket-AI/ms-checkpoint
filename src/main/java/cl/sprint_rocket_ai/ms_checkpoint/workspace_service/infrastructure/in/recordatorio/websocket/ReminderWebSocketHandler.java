@@ -66,14 +66,6 @@ public class ReminderWebSocketHandler extends AbstractWebSocketHandler {
         closeQuietly(session);
     }
 
-    // ─── API pública ─────────────────────────────────────────────────────────────
-
-    /**
-     * Envía un mensaje JSON a todas las sesiones activas del usuario.
-     *
-     * @param userId  identificador del usuario destinatario
-     * @param message mensaje JSON serializado
-     */
     public void sendToUser(String userId, String message) {
         Set<WebSocketSession> userSessions = sessions.get(userId);
         if (userSessions == null || userSessions.isEmpty()) {
@@ -96,15 +88,11 @@ public class ReminderWebSocketHandler extends AbstractWebSocketHandler {
         });
     }
 
-    /**
-     * Retorna el número de usuarios con sesiones WebSocket activas.
-     * Útil para monitoreo/health checks.
-     */
+
     public int getActiveUserCount() {
         return sessions.size();
     }
 
-    // ─── Helpers ─────────────────────────────────────────────────────────────────
 
     private String extractUserId(WebSocketSession session) {
         String query = session.getUri() != null ? session.getUri().getQuery() : null;
